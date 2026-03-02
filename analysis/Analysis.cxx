@@ -1,0 +1,15 @@
+#include "Analysis.h"
+#include "NPApplication.h"
+////////////////////////////////////////////////////////////////////////////////
+void user_analysis::Analysis::Init() {
+  auto app = nptool::Application::GetApplication();
+  // mydetector = std::dynamic_pointer_cast<my_detector::MyDetector>(app->GetDetector("mydetector"));
+}
+////////////////////////////////////////////////////////////////////////////////
+void user_analysis::Analysis::TreatEvent() {}
+////////////////////////////////////////////////////////////////////////////////
+void user_analysis::Analysis::End() {}
+////////////////////////////////////////////////////////////////////////////////
+extern "C" {
+std::shared_ptr<nptool::VUserAnalysis> ConstructUserAnalysis() { return std::make_shared<user_analysis::Analysis>(); }
+}

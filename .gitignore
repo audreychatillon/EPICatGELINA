@@ -1,0 +1,8 @@
+build/
+install/
+output/
+
+*.o
+*.so
+*.a
+*.root
