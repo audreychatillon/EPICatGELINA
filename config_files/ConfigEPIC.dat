@@ -1,7 +1,6 @@
-ConfigFC:
-  FC: 1
+ConfigEPIC:
+  det: 1
   anode: 1
-  actinide: U238
   cfd_frac: 4
   cfd_delay: 4
   cfd_thres: 10
@@ -12,10 +11,9 @@ ConfigFC:
   Q3_gate_start: 10
   Q3_gate_stop: 40
   RawTof_MaxLimit: 2000
-ConfigFC:
-  FC: 1
+ConfigEPIC:
+  det: 1
   anode: 2
-  actinide: U235
   cfd_frac: 4
   cfd_delay: 4
   cfd_thres: 10
@@ -26,10 +24,9 @@ ConfigFC:
   Q3_gate_start: 10
   Q3_gate_stop: 40
   RawTof_MaxLimit: 2000
-ConfigFC:
-  FC: 1
+ConfigEPIC:
+  det: 1
   anode: 3
-  actinide: U238
   cfd_frac: 4
   cfd_delay: 4
   cfd_thres: 10
@@ -40,24 +37,9 @@ ConfigFC:
   Q3_gate_start: 10
   Q3_gate_stop: 40
   RawTof_MaxLimit: 2000
-ConfigFC:
-  FC: 1
-  anode: 4
-  actinide: U235
-  cfd_frac: 4
-  cfd_delay: 4
-  cfd_thres: 10
-  Q1_gate_start: 6
-  Q1_gate_stop: 60
-  Q2_gate_start: 6
-  Q2_gate_stop: 10
-  Q3_gate_start: 10
-  Q3_gate_stop: 40
-  RawTof_MaxLimit: 2000
-ConfigFC:
-  FC: 1
+ConfigEPIC:
+  det: 1
   anode: 5
-  actinide: U238
   cfd_frac: 4
   cfd_delay: 4
   cfd_thres: 10
@@ -68,10 +50,9 @@ ConfigFC:
   Q3_gate_start: 10
   Q3_gate_stop: 40
   RawTof_MaxLimit: 2000
-ConfigFC:
-  FC: 1
+ConfigEPIC:
+  det: 1
   anode: 6
-  actinide: U235
   cfd_frac: 4
   cfd_delay: 4
   cfd_thres: 10
@@ -82,10 +63,9 @@ ConfigFC:
   Q3_gate_start: 10 
   Q3_gate_stop: 40
   RawTof_MaxLimit: 2000
-ConfigFC:
-  FC: 1
+ConfigEPIC:
+  det: 1
   anode: 7
-  actinide: U238
   cfd_frac: 4
   cfd_delay: 4
   cfd_thres: 10
@@ -96,10 +76,9 @@ ConfigFC:
   Q3_gate_start: 10 
   Q3_gate_stop: 40
   RawTof_MaxLimit: 2000
-ConfigFC:
-  FC: 1
+ConfigEPIC:
+  det: 1
   anode: 8
-  actinide: U235
   cfd_frac: 4
   cfd_delay: 4
   cfd_thres: 10
@@ -110,10 +89,9 @@ ConfigFC:
   Q3_gate_start: 10 
   Q3_gate_stop: 40
   RawTof_MaxLimit: 2000
-ConfigFC:
-  FC: 1
+ConfigEPIC:
+  det: 1
   anode: 9
-  actinide: U238
   cfd_frac: 4
   cfd_delay: 4
   cfd_thres: 10
@@ -124,10 +102,9 @@ ConfigFC:
   Q3_gate_start: 10
   Q3_gate_stop: 40
   RawTof_MaxLimit: 2000
-ConfigFC:
-  FC: 1
+ConfigEPIC:
+  det: 1
   anode: 10
-  actinide: U235
   cfd_frac: 4
   cfd_delay: 4
   cfd_thres: 10
@@ -138,10 +115,9 @@ ConfigFC:
   Q3_gate_start: 10 
   Q3_gate_stop: 40
   RawTof_MaxLimit: 2000
-ConfigFC:
-  FC: 1
+ConfigEPIC:
+  det: 1
   anode: 11
-  actinide: U238
   cfd_frac: 4
   cfd_delay: 4
   cfd_thres: 10
@@ -152,10 +128,9 @@ ConfigFC:
   Q3_gate_start: 10 
   Q3_gate_stop: 40
   RawTof_MaxLimit: 2000
-ConfigFC:
-  FC: 2
+ConfigEPIC:
+  det: 2
   anode: 1
-  actinide: Pu240
   cfd_frac: 4
   cfd_delay: 4
   cfd_thres: 10
@@ -166,10 +141,9 @@ ConfigFC:
   Q3_gate_start: 10
   Q3_gate_stop: 40
   RawTof_MaxLimit: 2000
-ConfigFC:
-  FC: 2
+ConfigEPIC:
+  det: 2
   anode: 2
-  actinide: Pu240
   cfd_frac: 4
   cfd_delay: 4
   cfd_thres: 10
@@ -180,10 +154,9 @@ ConfigFC:
   Q3_gate_start: 10
   Q3_gate_stop: 40
   RawTof_MaxLimit: 2000
-ConfigFC:
-  FC: 2
+ConfigEPIC:
+  det: 2
   anode: 3
-  actinide: Pu240
   cfd_frac: 4
   cfd_delay: 4
   cfd_thres: 10
@@ -194,10 +167,9 @@ ConfigFC:
   Q3_gate_start: 10
   Q3_gate_stop: 40
   RawTof_MaxLimit: 2000
-ConfigFC:
-  FC: 2
+ConfigEPIC:
+  det: 2
   anode: 4
-  actinide: Pu240
   cfd_frac: 4
   cfd_delay: 4
   cfd_thres: 10
@@ -208,10 +180,9 @@ ConfigFC:
   Q3_gate_start: 10
   Q3_gate_stop: 40
   RawTof_MaxLimit: 2000
-ConfigFC:
-  FC: 2
+ConfigEPIC:
+  det: 2
   anode: 5
-  actinide: Pu240
   cfd_frac: 4
   cfd_delay: 4
   cfd_thres: 10

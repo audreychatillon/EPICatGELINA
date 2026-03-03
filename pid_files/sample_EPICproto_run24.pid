@@ -23,16 +23,16 @@
 # qdc caras channel:HF
 13:QDC4:HF
 # sampler channel:FC_2_2
-102:SAMPLER:FC_2_2
+102:SAMPLER:FC_2_1
 # sampler channel:FC_2_3
-103:SAMPLER:FC_2_3
+103:SAMPLER:FC_2_2
 # sampler channel:R_I_1_HG
 104:SAMPLER:R_I_1_HG
 # sampler channel:R_I_1_LG
 105:SAMPLER:R_I_1_LG
 # sampler channel:FC_2_7
-107:SAMPLER:FC_2_7
+107:SAMPLER:FC_2_3
 # sampler channel:FC_2_10
-110:SAMPLER:FC_2_10
+110:SAMPLER:FC_2_4
 # sampler channel:FC_2_11
-111:SAMPLER:FC_2_11
+111:SAMPLER:FC_2_5
