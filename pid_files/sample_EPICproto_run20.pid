@@ -1,0 +1,36 @@
+# sampler channel:FC_1_1
+1:SAMPLER:FC_1_1
+# sampler channel:FC_1_2
+2:SAMPLER:FC_1_2
+# sampler channel:FC_1_3
+3:SAMPLER:FC_1_3
+# sampler channel:FC_1_4
+4:SAMPLER:FC_1_4
+# sampler channel:FC_1_5
+5:SAMPLER:FC_1_5
+# sampler channel:FC_1_6
+6:SAMPLER:FC_1_6
+# sampler channel:FC_1_7
+7:SAMPLER:FC_1_7
+# sampler channel:FC_1_8
+8:SAMPLER:FC_1_8
+# sampler channel:FC_1_9
+9:SAMPLER:FC_1_9
+# sampler channel:FC_1_10
+10:SAMPLER:FC_1_10
+# sampler channel:FC_1_11
+11:SAMPLER:FC_1_11
+# qdc caras channel:HF
+13:QDC4:HF
+# sampler channel:FC_2_2
+102:SAMPLER:FC_2_1
+# sampler channel:FC_2_3
+103:SAMPLER:FC_2_2
+# sampler channel:R_I_1_HG
+104:SAMPLER:R_I_1_HG
+# sampler channel:R_I_1_LG
+105:SAMPLER:R_I_1_LG
+# sampler channel:FC_2_7
+107:SAMPLER:FC_2_3
+# sampler channel:FC_2_10
+110:SAMPLER:FC_2_4
