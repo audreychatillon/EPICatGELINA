@@ -6,7 +6,7 @@ epic:
  actinide: 238U 235U 238U 235U 238U 235U 238U 235U 238U 235U 238U
 epic:
  POS: 0 0 3720
- nANODES: 5
+ nANODES: 4
  zOFFSET_A1: -29.6
- DZ_prevA:   6.0   5.8  23.6  17.8   5.8
- actinide: 240Pu 240Pu 240Pu 240Pu 240Pu
+ DZ_prevA:   6.0   5.8  23.6  17.8   
+ actinide: 240Pu 240Pu 240Pu 240Pu 

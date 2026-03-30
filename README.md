@@ -36,6 +36,8 @@ mkdir build install
 cmake -B build -DCMAKE_INSTALL_PREFIX=install ./
 make -C build/ install
 ```
+In the EPICproject folder, edit `project.yaml` and uncomment line 10, adding the flag `--disable-mt` 
+See an example: [project.yaml](https://github.com/audreychatillon/EPICatGELINA/blob/main/project.yaml)
 
 ## read raw FASTER data
 
@@ -44,4 +46,14 @@ To read FASTER data, configuration files must be provided:
  - `detector/detector.yaml`[example](https://github.com/audreychatillon/EPICatGELINA/blob/main/detector/detector_run24.yaml)
  - `ConfigEPIC.dat`[example](https://github.com/audreychatillon/EPICatGELINA/blob/main/config_files/ConfigEPIC_run24.dat)
 
+To write a TTree in output/conversion folder (see project.yaml) 
+```bash
+npconversion --input faster,sample.pid,/path/to/FASTER/data/name_faster_file_num.fast --output root,RawTree,raw_num.root
+```
+
+For on-line monitoriing in a browser with localhost:8082
+```bash
+npconversion --input faster,sample.pid,/path/to/FASTER/data/name_faster_file_num.fast --output root,8081
+nponline --input-raw root,localhost:8081 --interface root,8082
+```
 
