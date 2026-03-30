@@ -1,6 +1,8 @@
 ###Project using the epic plugin with NPTool V4
 
-##For plugin management:
+## epic plugin management
+
+For plugin management:
 [Plugins Management](https://nptool.in2p3.fr/manual-v4/plugins-management/)
 ```bash
 nptool --install epic
