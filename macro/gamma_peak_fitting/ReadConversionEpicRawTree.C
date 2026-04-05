@@ -26,11 +26,14 @@ void run(UShort_t run_number)
   // === =========================================================
   // === histograms
   TH1F * h1_inTofRaw[m_nAnodesTot];
+  TH1F * h1_inTofRaw_GammaPeak[m_nAnodesTot];
   int anode = 0;
   for(unsigned short d = 0 ; d < m_nDets; d++){
     for(unsigned short a = 0 ; a < m_nAnodes[d]; a++){
        sprintf(name,"inTofRaw_EPIC%i_A%i",d+1,a+1);
-       h1_inTofRaw[anode] = new TH1F(name,name,20000,-5000,15000);
+       h1_inTofRaw[anode] = new TH1F(name,name,60000,-2000,4000);
+       sprintf(name,"inTofRaw_GammaPeak_EPIC%i_A%i",d+1,a+1);
+       h1_inTofRaw_GammaPeak[anode] = new TH1F(name,name,10000,500,1500);
        anode++;
     }
   }
@@ -58,6 +61,7 @@ void run(UShort_t run_number)
 	}
         index += anode - 1;
         h1_inTofRaw[index]->Fill(raw.fFC_TofRaw[i]);
+        h1_inTofRaw_GammaPeak[index]->Fill(raw.fFC_TofRaw[i]);
      }
 
 
@@ -67,12 +71,17 @@ void run(UShort_t run_number)
 
   anode = 0 ;
   TCanvas * can_tof_raw[m_nAnodesTot];
+  TCanvas * can_gamma_peak[m_nAnodesTot];
   for(unsigned short d = 0 ; d < m_nDets; d++){
     for(unsigned short a = 0 ; a < m_nAnodes[d]; a++){
        sprintf(name,"inTofRaw_EPIC%i_ANODE%i",d+1,a+1);
        can_tof_raw[anode] = new TCanvas(name,name,0,0,1500,1000);
        can_tof_raw[anode]->cd();
        h1_inTofRaw[anode]->Draw();
+       sprintf(name,"GammaPeak_EPIC%i_ANODE%i",d+1,a+1);
+       can_gamma_peak[anode] = new TCanvas(name,name,0,0,1500,1000);
+       can_gamma_peak[anode]->cd();
+       h1_inTofRaw_GammaPeak[anode]->Draw();
        anode++;
     }
   }
