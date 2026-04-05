@@ -38,6 +38,12 @@ make -C build/ install
 ```
 In the EPICproject folder, edit `project.yaml` and uncomment line 10, adding the flag `--disable-mt` 
 See an example: [project.yaml](https://github.com/audreychatillon/EPICatGELINA/blob/main/project.yaml)
+In the EPICproject folder, create directory and subdirectories to write analysis root trees
+```bash
+mkdir output
+cd output
+mkdir analysis conversion simulation
+```
 
 ## read raw FASTER data
 
@@ -48,7 +54,7 @@ To read FASTER data, configuration files must be provided:
 
 To write a TTree in output/conversion folder (see project.yaml) 
 ```bash
-npconversion --input faster,sample.pid,/path/to/FASTER/data/name_faster_file_num.fast --output root,RawTree,raw_num.root
+npconversion --input faster,sample.pid,/path/to/FASTER/data/name_faster_file_num.fast --output root,EpicRawTree,raw_num.root
 ```
 
 For on-line monitoriing in a browser with localhost:8082
