@@ -1,0 +1,24 @@
+# sampler channel:FC_1
+1:SAMPLER:FC_1
+# sampler channel:FC_2
+2:SAMPLER:FC_2
+# sampler channel:FC_3
+3:SAMPLER:FC_3
+# sampler channel:FC_4
+4:SAMPLER:FC_4
+# sampler channel:FC_5
+5:SAMPLER:FC_5
+# sampler channel:FC_6
+6:SAMPLER:FC_6
+# sampler channel:FC_7
+7:SAMPLER:FC_7
+# sampler channel:FC_8
+8:SAMPLER:FC_8
+# sampler channel:FC_9
+9:SAMPLER:FC_9
+# sampler channel:FC_10
+10:SAMPLER:FC_10
+# sampler channel:FC_11
+11:SAMPLER:FC_11
+# qdc caras channel:HF
+13:QDC4:HF
