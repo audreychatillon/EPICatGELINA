@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "EpicRawTree.h"
+#include "../ClassDef/EpicRawTree.h"
 
 #include <TCanvas.h>
 #include <TChain.h>
