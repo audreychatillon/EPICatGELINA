@@ -141,6 +141,11 @@ void run(UShort_t run_number, int Pmbar, int HV)
   can_T0->Divide(1,2);
   can_T0->cd(1); h1_TimeHF->Draw();
   can_T0->cd(2); h1_DeltaTimeHF->Draw(); 
+  unsigned int effective_beam_time_s = 0;
+  for (int b = 1 ; b <= h1_TimeHF->GetNbinsX(); b++){
+	if(h1_TimeHF->GetBinContent(b) != 0) effective_beam_time_s++;
+  }
+  cout << "EFFECTIVE BEAM TIME = " << effective_beam_time_s << " s" << endl;
   
   for(unsigned short d = 0 ; d < m_nDets; d++){
 
