@@ -23,6 +23,15 @@ void run(UShort_t run_number, int Pmbar, int HV)
   unsigned short m_nAnodes[m_nDets] = {11};  
   const unsigned short m_nAnodesTot = 11;
 
+  // === variables for analysis
+  double Qmax[m_nDets];
+  int    Imax[m_nDets];
+
+  for(unsigned short d = 0 ; d < m_nDets; d++){
+	Qmax[d] = 0.;
+        Imax[d] = -1;
+  }
+
 
   // === =========================================================
   // === histograms
@@ -40,7 +49,8 @@ void run(UShort_t run_number, int Pmbar, int HV)
 
     for(unsigned short a = 0 ; a < m_nAnodes[d]; a++){
        sprintf(name,"Q1vT_EPIC%i_A%i",d+1,a+1);
-       h2_Q1vT[anode] = new TH2F(name,name,1440,0,86400,5000,0,500000);
+       h2_Q1vT[anode] = new TH2F(name,name,2400,0,72000,5000,0,500000);
+       h2_Q1vT[anode]->GetXaxis()->SetTitle("Time [s] 30s/bin");
 
        sprintf(name,"Q1_EPIC%i_A%i",d+1,a+1);
        h1_Q1[anode] = new TH1F(name,name,50000,0,500000);
@@ -54,7 +64,7 @@ void run(UShort_t run_number, int Pmbar, int HV)
        h1_Q3[anode]->SetLineColor(kCyan);
 
        sprintf(name,"discri_EPIC%i_A%i",d+1,a+1);
-       h2_Q2Q3vQ1[anode] = new TH2F(name,name,2500,0,500000,500,0,10);
+       h2_Q2Q3vQ1[anode] = new TH2F(name,name,2500,0,500000,300,0,3);
 
        //sprintf(name,"inTofRaw_EPIC%i_A%i",d+1,a+1);
        //h1_inTofRaw[anode] = new TH1F(name,name,60000,-20000,40000);
@@ -82,17 +92,28 @@ void run(UShort_t run_number, int Pmbar, int HV)
     h1_TimeHF->Fill(1.e-09*raw.fHF_Time); 
     h1_DeltaTimeHF->Fill(1.e-06*(raw.fHF_Time-raw.fHF_TimePrev)); 
 
+    // get the channel with Qmax
     int mult = raw.fFC_DetNbr.size();
     for(int i=0; i<mult; i++){
 	int det = raw.fFC_DetNbr[i];
-	int anode = raw.fFC_AnodeNbr[i];
-        double q1 = raw.fFC_Q1[i];
-        double q2 = raw.fFC_Q2[i];
-        double q3 = raw.fFC_Q3[i];
-        double t_s = raw.fFC_Time[i] * 1.e-09 ;
+        double qm = raw.fFC_Qmax[i];
+        if(Qmax[det-1]<qm){
+		Qmax[det-1] = qm;
+		Imax[det-1] = i;
+        }
+    }
+
+    // read the channel with Qmax
+    for(int d=0; d<m_nDets; d++){
+	int det = raw.fFC_DetNbr[Imax[d]];
+	int anode = raw.fFC_AnodeNbr[Imax[d]];
+        double q1 = raw.fFC_Q1[Imax[d]];
+        double q2 = raw.fFC_Q2[Imax[d]];
+        double q3 = raw.fFC_Q3[Imax[d]];
+        double t_s = raw.fFC_Time[Imax[d]] * 1.e-09 ;
         int index = 0;
-        for(int d=0; d<det; d++){
-	  index += d*m_nAnodes[d];
+        for(int i=0; i<det; i++){
+	  index += i*m_nAnodes[i];
 	}
         index += anode - 1;
         h1_Q1[index]->Fill(q1);
@@ -102,7 +123,7 @@ void run(UShort_t run_number, int Pmbar, int HV)
         //h1_inTofRaw[index]->Fill(raw.fFC_TofRaw[i]);
         //h1_inTofRaw_GammaPeak[index]->Fill(raw.fFC_TofRaw[i]);
         if (q3>0) h2_Q2Q3vQ1[index]->Fill(q1,q2/q3);
-     }
+    }
 
 
   }//end of loop over the entries 
@@ -147,7 +168,7 @@ void run(UShort_t run_number, int Pmbar, int HV)
        can_Q1vT[d]->cd(a+1);
        h2_Q1vT[anode]->Draw("colz");
 
-       can_discri[d]->cd(a+1);
+       can_discri[d]->cd(a+1); gPad->SetLogx();
        h2_Q2Q3vQ1[anode]->Draw("colz");
 
        //sprintf(name,"inTofRaw_EPIC%i_ANODE%i",d+1,a+1);
