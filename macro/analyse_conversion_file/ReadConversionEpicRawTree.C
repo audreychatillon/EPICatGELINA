@@ -13,7 +13,7 @@
 #include <TH1F.h>
 #include <TH2F.h>
 
-void run(UShort_t run_number, int Pmbar)
+void run(UShort_t run_number, int Pmbar, int HV)
 {
 
   char name[100];
@@ -26,15 +26,18 @@ void run(UShort_t run_number, int Pmbar)
 
   // === =========================================================
   // === histograms
+  TH1F * h1_TimeHF = new TH1F("TimeHF","TimeHF",86400,0,86400);;
+  TH1F * h1_DeltaTimeHF = new TH1F("DeltaTimeHF","DeltaTimeHF",5000,0,5);;
   TH1F * h1_Q1[m_nAnodesTot];
   TH2F * h2_Q1vT[m_nAnodesTot];
   TH1F * h1_Q2[m_nAnodesTot];
   TH1F * h1_Q3[m_nAnodesTot];
   TH2F * h2_Q2Q3vQ1[m_nAnodesTot];
-  TH1F * h1_inTofRaw[m_nAnodesTot];
-  TH1F * h1_inTofRaw_GammaPeak[m_nAnodesTot];
+  //TH1F * h1_inTofRaw[m_nAnodesTot];
+  //TH1F * h1_inTofRaw_GammaPeak[m_nAnodesTot];
   int anode = 0;
   for(unsigned short d = 0 ; d < m_nDets; d++){
+
     for(unsigned short a = 0 ; a < m_nAnodes[d]; a++){
        sprintf(name,"Q1vT_EPIC%i_A%i",d+1,a+1);
        h2_Q1vT[anode] = new TH2F(name,name,1440,0,86400,5000,0,500000);
@@ -53,11 +56,11 @@ void run(UShort_t run_number, int Pmbar)
        sprintf(name,"discri_EPIC%i_A%i",d+1,a+1);
        h2_Q2Q3vQ1[anode] = new TH2F(name,name,2500,0,500000,500,0,10);
 
-       sprintf(name,"inTofRaw_EPIC%i_A%i",d+1,a+1);
-       h1_inTofRaw[anode] = new TH1F(name,name,60000,-20000,40000);
+       //sprintf(name,"inTofRaw_EPIC%i_A%i",d+1,a+1);
+       //h1_inTofRaw[anode] = new TH1F(name,name,60000,-20000,40000);
 
-       sprintf(name,"inTofRaw_GammaPeak_EPIC%i_A%i",d+1,a+1);
-       h1_inTofRaw_GammaPeak[anode] = new TH1F(name,name,10000,500,1500);
+       //sprintf(name,"inTofRaw_GammaPeak_EPIC%i_A%i",d+1,a+1);
+       //h1_inTofRaw_GammaPeak[anode] = new TH1F(name,name,10000,500,1500);
 
        anode++;
     }
@@ -66,7 +69,7 @@ void run(UShort_t run_number, int Pmbar)
   // === =========================================================
   // === input data 
   TChain * ch = new TChain("EpicRawTree");
-  sprintf(name,"../../output/conversion/Test%i_V4b_%imbar_HV610V.root",run_number,Pmbar);
+  sprintf(name,"../../output/conversion/Test%i_V4b_%imbar_%iV.root",run_number,Pmbar,HV);
   ch->Add(name);
   ch->ls();
   EpicRawTree raw(ch);
@@ -75,6 +78,9 @@ void run(UShort_t run_number, int Pmbar)
   for(ULong64_t Entry=0; Entry<nentries; Entry++){
     raw.GetEntry(Entry);
     if ((Entry % 5000000)==0) cout << "\r === Entry = " << Entry << " === " << flush;
+
+    h1_TimeHF->Fill(1.e-09*raw.fHF_Time); 
+    h1_DeltaTimeHF->Fill(1.e-06*(raw.fHF_Time-raw.fHF_TimePrev)); 
 
     int mult = raw.fFC_DetNbr.size();
     for(int i=0; i<mult; i++){
@@ -93,8 +99,8 @@ void run(UShort_t run_number, int Pmbar)
         h2_Q1vT[index]->Fill(t_s,q1);
         h1_Q2[index]->Fill(q2);
         h1_Q3[index]->Fill(q3);
-        h1_inTofRaw[index]->Fill(raw.fFC_TofRaw[i]);
-        h1_inTofRaw_GammaPeak[index]->Fill(raw.fFC_TofRaw[i]);
+        //h1_inTofRaw[index]->Fill(raw.fFC_TofRaw[i]);
+        //h1_inTofRaw_GammaPeak[index]->Fill(raw.fFC_TofRaw[i]);
         if (q3>0) h2_Q2Q3vQ1[index]->Fill(q1,q2/q3);
      }
 
@@ -104,11 +110,17 @@ void run(UShort_t run_number, int Pmbar)
   cout << endl;
 
   anode = 0 ;
+  TCanvas * can_T0 = new TCanvas("T0","T0",0,0,2500,1500);
   TCanvas * can_Q[m_nDets];
   TCanvas * can_Q1vT[m_nDets];
   TCanvas * can_discri[m_nDets];
   //TCanvas * can_tof_raw[m_nAnodesTot];
   //TCanvas * can_gamma_peak[m_nAnodesTot];
+  
+  can_T0->Divide(1,2);
+  can_T0->cd(1); h1_TimeHF->Draw();
+  can_T0->cd(2); h1_DeltaTimeHF->Draw(); 
+  
   for(unsigned short d = 0 ; d < m_nDets; d++){
 
     int ncol = ceil(0.5 * m_nAnodes[d]);
