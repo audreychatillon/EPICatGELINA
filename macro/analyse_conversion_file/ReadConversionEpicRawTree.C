@@ -13,7 +13,7 @@
 #include <TH1F.h>
 #include <TH2F.h>
 
-void run(UShort_t run_number, int Pmbar, int HV)
+void run(UShort_t run_number, string PA, int Pmbar, int HV)
 {
 
   char name[100];
@@ -23,20 +23,12 @@ void run(UShort_t run_number, int Pmbar, int HV)
   unsigned short m_nAnodes[m_nDets] = {11};  
   const unsigned short m_nAnodesTot = 11;
 
-  // === variables for analysis
-  double Qmax[m_nDets];
-  int    Imax[m_nDets];
-
-  for(unsigned short d = 0 ; d < m_nDets; d++){
-	Qmax[d] = 0.;
-        Imax[d] = -1;
-  }
-
 
   // === =========================================================
   // === histograms
   TH1F * h1_TimeHF = new TH1F("TimeHF","TimeHF",86400,0,86400);;
-  TH1F * h1_DeltaTimeHF = new TH1F("DeltaTimeHF","DeltaTimeHF",5000,0,5);;
+  TH1F * h1_DeltaTimeHF = new TH1F("DeltaTimeHF","DeltaTimeHF",10000,2,3);;
+  TH1F * h1_Mult[m_nDets];
   TH1F * h1_Q1[m_nAnodesTot];
   TH2F * h2_Q1vT[m_nAnodesTot];
   TH1F * h1_Q2[m_nAnodesTot];
@@ -44,8 +36,12 @@ void run(UShort_t run_number, int Pmbar, int HV)
   TH2F * h2_Q2Q3vQ1[m_nAnodesTot];
   //TH1F * h1_inTofRaw[m_nAnodesTot];
   //TH1F * h1_inTofRaw_GammaPeak[m_nAnodesTot];
+
   int anode = 0;
   for(unsigned short d = 0 ; d < m_nDets; d++){
+
+    sprintf(name,"EPIC%i_Mult",d+1);
+    h1_Mult[d] = new TH1F(name,name,13,-0.5,12.5);
 
     for(unsigned short a = 0 ; a < m_nAnodes[d]; a++){
        sprintf(name,"Q1vT_EPIC%i_A%i",d+1,a+1);
@@ -79,7 +75,7 @@ void run(UShort_t run_number, int Pmbar, int HV)
   // === =========================================================
   // === input data 
   TChain * ch = new TChain("EpicRawTree");
-  sprintf(name,"../../output/conversion/Test%i_V4b_%imbar_%iV.root",run_number,Pmbar,HV);
+  sprintf(name,"../../output/conversion/Test%i_V%s_%imbar_%iV.root",run_number,PA.c_str(),Pmbar,HV);
   ch->Add(name);
   ch->ls();
   EpicRawTree raw(ch);
@@ -87,51 +83,67 @@ void run(UShort_t run_number, int Pmbar, int HV)
   cout << "number of entries: " << nentries << endl;
   for(ULong64_t Entry=0; Entry<nentries; Entry++){
     raw.GetEntry(Entry);
-    if ((Entry % 5000000)==0) cout << "\r === Entry = " << Entry << " === " << flush;
-
-    h1_TimeHF->Fill(1.e-09*raw.fHF_Time); 
-    h1_DeltaTimeHF->Fill(1.e-06*(raw.fHF_Time-raw.fHF_TimePrev)); 
+    if ((Entry % 1000000)==0) cout << "\r === Entry = " << Entry << " === " << flush;
+    //if ((Entry % 2)==0) cout << "\r === Entry = " << Entry << " === " << flush;
+ 
+    double Qmax[m_nDets];
+    int    Imax[m_nDets];
+    int    Mult[m_nDets];
+    for(unsigned short d = 0 ; d < m_nDets; d++){
+        Qmax[d] = 0.;
+        Imax[d] = -1;
+    	Mult[d] = 0;
+    }
 
     // get the channel with Qmax
     int mult = raw.fFC_DetNbr.size();
-    for(int i=0; i<mult; i++){
-	int det = raw.fFC_DetNbr[i];
-        double qm = raw.fFC_Qmax[i];
-        if(Qmax[det-1]<qm){
-		Qmax[det-1] = qm;
-		Imax[det-1] = i;
+    if (mult>0){
+      if(raw.fFC_DetNbr[0] < 0){
+         h1_TimeHF->Fill(1.e-09*raw.fHF_Time); 
+         h1_DeltaTimeHF->Fill(1.e-06*(raw.fHF_Time-raw.fHF_TimePrev)); 
+      } // end of if HF data
+      else{
+        for(int i=0; i<mult; i++){
+            int det = raw.fFC_DetNbr[i];
+            double qm = raw.fFC_Qmax[i];
+            Mult[det-1]++;
+            if(Qmax[det-1]<qm && det>=0 ){
+            	Qmax[det-1] = qm;
+            	Imax[det-1] = i;
+            }
         }
-    }
 
-    // read the channel with Qmax
-    for(int d=0; d<m_nDets; d++){
-	int det = raw.fFC_DetNbr[Imax[d]];
-	int anode = raw.fFC_AnodeNbr[Imax[d]];
-        double q1 = raw.fFC_Q1[Imax[d]];
-        double q2 = raw.fFC_Q2[Imax[d]];
-        double q3 = raw.fFC_Q3[Imax[d]];
-        double t_s = raw.fFC_Time[Imax[d]] * 1.e-09 ;
-        int index = 0;
-        for(int i=0; i<det; i++){
-	  index += i*m_nAnodes[i];
-	}
-        index += anode - 1;
-        h1_Q1[index]->Fill(q1);
-        h2_Q1vT[index]->Fill(t_s,q1);
-        h1_Q2[index]->Fill(q2);
-        h1_Q3[index]->Fill(q3);
-        //h1_inTofRaw[index]->Fill(raw.fFC_TofRaw[i]);
-        //h1_inTofRaw_GammaPeak[index]->Fill(raw.fFC_TofRaw[i]);
-        if (q3>0) h2_Q2Q3vQ1[index]->Fill(q1,q2/q3);
-    }
-
-
+        // read the channel with Qmax
+        for(int d=0; d<m_nDets; d++){
+            h1_Mult[d]->Fill(Mult[d]);
+            int det = raw.fFC_DetNbr[Imax[d]];
+            int anode = raw.fFC_AnodeNbr[Imax[d]];
+            double q1 = raw.fFC_Q1[Imax[d]];
+            double q2 = raw.fFC_Q2[Imax[d]];
+            double q3 = raw.fFC_Q3[Imax[d]];
+            double t_s = raw.fFC_Time[Imax[d]] * 1.e-09 ;
+            int index = 0;
+            for(int i=0; i<det; i++){
+              index += i*m_nAnodes[i];
+            }
+            index += anode - 1;
+            h1_Q1[index]->Fill(q1);
+            h2_Q1vT[index]->Fill(t_s,q1);
+            h1_Q2[index]->Fill(q2);
+            h1_Q3[index]->Fill(q3);
+            //h1_inTofRaw[index]->Fill(raw.fFC_TofRaw[i]);
+            //h1_inTofRaw_GammaPeak[index]->Fill(raw.fFC_TofRaw[i]);
+            if (q3>0) h2_Q2Q3vQ1[index]->Fill(q1,q2/q3);
+        }
+      }// end of if FC data
+    }// end of if mult > 0
   }//end of loop over the entries 
 
   cout << endl;
 
   anode = 0 ;
   TCanvas * can_T0 = new TCanvas("T0","T0",0,0,2500,1500);
+  TCanvas * can_mult = new TCanvas("Mult","Mult",0,0,2500,1500);
   TCanvas * can_Q[m_nDets];
   TCanvas * can_Q1vT[m_nDets];
   TCanvas * can_discri[m_nDets];
@@ -146,8 +158,11 @@ void run(UShort_t run_number, int Pmbar, int HV)
 	if(h1_TimeHF->GetBinContent(b) != 0) effective_beam_time_s++;
   }
   cout << "EFFECTIVE BEAM TIME = " << effective_beam_time_s << " s" << endl;
-  
+  cout << "NUMBER OF HF: = " << h1_DeltaTimeHF->Integral() << " " << endl;
+
+  can_mult->Divide(1,m_nDets);
   for(unsigned short d = 0 ; d < m_nDets; d++){
+    can_mult->cd(d+1); h1_Mult[d]->Draw();
 
     int ncol = ceil(0.5 * m_nAnodes[d]);
     cout << "det : " << d+1 << " ncol:" << ncol << endl;
