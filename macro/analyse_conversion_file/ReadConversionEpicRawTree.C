@@ -13,142 +13,209 @@
 #include <TH1F.h>
 #include <TH2F.h>
 
-void run(UShort_t run_number, string PA, int Pmbar, int HV)
+void run(int data_set)
 {
+
+  // ==========================================================================================
+  // === VARIABLES
 
   char name[100];
 
-  // TODO remove hard coding
-  const unsigned short m_nDets = 1;
-  unsigned short m_nAnodes[m_nDets] = {11};  
-  const unsigned short m_nAnodesTot = 11;
+  int nA  ;
+  int Pmbar;
+  int Q1max;
+  int HV;
+  string PA;
+
+  // ===========================================================================================
+  // === INPUT DATA
+  vector<double>*  fSampler_Signal   = nullptr;
+
+  TChain * ch = new TChain("EpicRawTree");
+
+  switch (data_set) {
+      case 1: // PA = V4b, P=1030mbar, HV=550V
+          nA    = 9 ;
+          HV    = 550;
+          Pmbar = 1030;
+          Q1max = 300000;
+          PA    = "4b";
+          ch->Add(Form("../../output/conversion/Test1_V4b_1030mbar_550V.root"));
+          ch->Add(Form("../../output/conversion/Test2_V4b_1030mbar_550V.root"));
+          ch->Add(Form("../../output/conversion/Test5_V4b_1030mbar_550V.root"));
+          ch->Add(Form("../../output/conversion/Test6_V4b_1030mbar_550V.root"));
+          break;
+     case 2: // PA = V4b, P=1190mbar, HV = 610V
+          nA    = 9 ;
+          HV    = 610;
+          Pmbar = 1190;
+          Q1max = 300000;
+          PA    = "4b";
+          ch->Add(Form("../../output/conversion/Test3_V4b_1030mbar_610V.root"));
+          break;
+     case 3: // PA = V4b, P=1190mbar, HV = 500V
+          nA    = 9 ;
+          HV    = 500;
+          Pmbar = 1190;
+          Q1max = 300000;
+          PA    = "4b";
+          ch->Add(Form("../../output/conversion/Test4_V4b_1030mbar_500V.root"));
+          break;
+     case 4: // PA = V8.2, P=1380mbar, HV = 650V
+          nA    = 4 ;
+          HV    = 650;
+          Pmbar = 1380;
+          Q1max = 400000;
+          PA    = "8-2";
+          ch->Add(Form("../../output/conversion/Test9_V8-2_1380mbar_650V.root"));
+          ch->Add(Form("../../output/conversion/Test13_V8-2_1380mbar_650V.root"));
+          break;
+     case 5: // PA = V8.2, P=1040mbar, HV = 550V
+          nA    = 4 ;
+          HV    = 550;
+          Pmbar = 1040;
+          Q1max = 400000;
+          PA    = "8-2";
+          ch->Add(Form("../../output/conversion/Test10_V8-2_1040mbar_550V.root"));
+          ch->Add(Form("../../output/conversion/Test12_V8-2_1040mbar_550V.root"));
+          break;
+     default:
+          nA    = 0 ;
+          HV    = 0 ;
+          Pmbar = 0 ;
+          Q1max = 0 ;
+          PA    = "V";
+          break;
+  }
+
+  unordered_map<int,int> mapindex;
+  unordered_map<int,int> mapanode;
+  if(nA==9){
+      mapindex = { {1,0}, {2,1}, {3,2}, {4,3}, {6,4}, {8,5}, {9,6}, {10,7}, {11,8} };
+  }
+  else if(nA==4){
+      mapindex = { {3,0}, {4,1}, {9,2}, {10,3} };
+  }
+  for (const auto& p : mapindex) mapanode[p.second] = p.first;
+  int ncol = ceil(nA*0.5); 
+  cout << "ncol: " << ncol << endl;
+ 
+  EpicRawTree raw(ch);
 
 
   // === =========================================================
   // === histograms
   TH1F * h1_TimeHF = new TH1F("TimeHF","TimeHF",86400,0,86400);;
   TH1F * h1_DeltaTimeHF = new TH1F("DeltaTimeHF","DeltaTimeHF",10000,2,3);;
-  TH1F * h1_Mult[m_nDets];
-  TH1F * h1_Q1[m_nAnodesTot];
-  TH2F * h2_Q1vT[m_nAnodesTot];
-  TH1F * h1_Q2[m_nAnodesTot];
-  TH1F * h1_Q3[m_nAnodesTot];
-  TH2F * h2_Q2Q3vQ1[m_nAnodesTot];
-  //TH1F * h1_inTofRaw[m_nAnodesTot];
-  //TH1F * h1_inTofRaw_GammaPeak[m_nAnodesTot];
+  TH1F * h1_Mult;
+  TH2F * h2_MvT;
+  TH1F * h1_Q1[nA];
+  TH2F * h2_Q1vT[nA];
+  TH1F * h1_Q2[nA];
+  TH1F * h1_Q3[nA];
+  TH2F * h2_Q2Q3vQ1[nA];
+  //TH1F * h1_inTofRaw[nA];
+  //TH1F * h1_inTofRaw_GammaPeak[nA];
 
-  int anode = 0;
-  for(unsigned short d = 0 ; d < m_nDets; d++){
+  sprintf(name,"Mult");
+  h1_Mult = new TH1F(name,name,13,-0.5,12.5);
+  h1_Mult->SetDirectory(0);
 
-    sprintf(name,"EPIC%i_Mult",d+1);
-    h1_Mult[d] = new TH1F(name,name,13,-0.5,12.5);
+  sprintf(name,"Mult_vs_T");
+  h2_MvT = new TH2F(name,name,2400,0,72000,13,-0.5,12.5);
+  h2_MvT->SetDirectory(0);
 
-    for(unsigned short a = 0 ; a < m_nAnodes[d]; a++){
-       sprintf(name,"Q1vT_EPIC%i_A%i",d+1,a+1);
-       h2_Q1vT[anode] = new TH2F(name,name,2400,0,72000,5000,0,500000);
-       h2_Q1vT[anode]->GetXaxis()->SetTitle("Time [s] 30s/bin");
+  for(unsigned short a = 0 ; a < nA; a++){
+     sprintf(name,"Q1vT_A%i_%i",mapanode[a],data_set);
+     h2_Q1vT[a] = new TH2F(name,name,2400,0,72000,5000,0,500000);
+     h2_Q1vT[a]->GetXaxis()->SetTitle("Time [s] 30s/bin");
+     h2_Q1vT[a]->SetDirectory(0);
 
-       sprintf(name,"Q1_EPIC%i_A%i",d+1,a+1);
-       h1_Q1[anode] = new TH1F(name,name,50000,0,500000);
+     sprintf(name,"Q1_A%i_%i",mapanode[a],data_set);
+     h1_Q1[a] = new TH1F(name,name,50000,0,500000);
+     h1_Q1[a]->SetDirectory(0);
 
-       sprintf(name,"Q2_EPIC%i_A%i",d+1,a+1);
-       h1_Q2[anode] = new TH1F(name,name,50000,0,500000);
-       h1_Q2[anode]->SetLineColor(8);
+     sprintf(name,"Q2_A%i_%i",mapanode[a],data_set);
+     h1_Q2[a] = new TH1F(name,name,50000,0,500000);
+     h1_Q2[a]->SetLineColor(8);
+     h1_Q2[a]->SetDirectory(0);
 
-       sprintf(name,"Q3_EPIC%i_A%i",d+1,a+1);
-       h1_Q3[anode] = new TH1F(name,name,50000,0,500000);
-       h1_Q3[anode]->SetLineColor(kCyan);
+     sprintf(name,"Q3_A%i_%i",mapanode[a],data_set);
+     h1_Q3[a] = new TH1F(name,name,50000,0,500000);
+     h1_Q3[a]->SetLineColor(kCyan);
+     h1_Q3[a]->SetDirectory(0);
 
-       sprintf(name,"discri_EPIC%i_A%i",d+1,a+1);
-       h2_Q2Q3vQ1[anode] = new TH2F(name,name,2500,0,500000,300,0,3);
+     sprintf(name,"discri_A%i_%i",mapanode[a],data_set);
+     h2_Q2Q3vQ1[a] = new TH2F(name,name,2500,0,500000,300,0,3);
+     h2_Q2Q3vQ1[a]->SetDirectory(0);
 
-       //sprintf(name,"inTofRaw_EPIC%i_A%i",d+1,a+1);
-       //h1_inTofRaw[anode] = new TH1F(name,name,60000,-20000,40000);
+     //sprintf(name,"inTofRaw_A%i",mapanode[a]);
+     //h1_inTofRaw[a] = new TH1F(name,name,60000,-20000,40000);
 
-       //sprintf(name,"inTofRaw_GammaPeak_EPIC%i_A%i",d+1,a+1);
-       //h1_inTofRaw_GammaPeak[anode] = new TH1F(name,name,10000,500,1500);
-
-       anode++;
-    }
+     //sprintf(name,"inTofRaw_GammaPeak_A%i",mapanode[a]);
+     //h1_inTofRaw_GammaPeak[a] = new TH1F(name,name,10000,500,1500);
   }
 
-  // === =========================================================
-  // === input data 
-  TChain * ch = new TChain("EpicRawTree");
-  sprintf(name,"../../output/conversion/Test%i_V%s_%imbar_%iV.root",run_number,PA.c_str(),Pmbar,HV);
-  ch->Add(name);
-  ch->ls();
-  EpicRawTree raw(ch);
+  
+  // ===========================================================================================
+  // === LOOP
   ULong64_t nentries = (ULong64_t)ch->GetEntries();
   cout << "number of entries: " << nentries << endl;
   for(ULong64_t Entry=0; Entry<nentries; Entry++){
     raw.GetEntry(Entry);
     if ((Entry % 1000000)==0) cout << "\r === Entry = " << Entry << " === " << flush;
-    //if ((Entry % 2)==0) cout << "\r === Entry = " << Entry << " === " << flush;
  
-    double Qmax[m_nDets];
-    int    Imax[m_nDets];
-    int    Mult[m_nDets];
-    for(unsigned short d = 0 ; d < m_nDets; d++){
-        Qmax[d] = 0.;
-        Imax[d] = -1;
-    	Mult[d] = 0;
-    }
+    double Qmax = 0.;
+    int    Imax = -1;
+    int    Mult = 0 ;
 
     // get the channel with Qmax
-    int mult = raw.fFC_DetNbr.size();
-    if (mult>0){
-      if(raw.fFC_DetNbr[0] < 0){
+    int fFC_size = (int)raw.fFC_AnodeNbr.size();
+    if (fFC_size>0){
+      if(raw.fFC_AnodeNbr[0] < 0){
          h1_TimeHF->Fill(1.e-09*raw.fHF_Time); 
          h1_DeltaTimeHF->Fill(1.e-06*(raw.fHF_Time-raw.fHF_TimePrev)); 
       } // end of if HF data
       else{
-        for(int i=0; i<mult; i++){
-            int det = raw.fFC_DetNbr[i];
+        for(int i=0; i<fFC_size; i++){
+            int anode = raw.fFC_AnodeNbr[i];
             double qm = raw.fFC_Qmax[i];
-            Mult[det-1]++;
-            if(Qmax[det-1]<qm && det>=0 ){
-            	Qmax[det-1] = qm;
-            	Imax[det-1] = i;
+            Mult++;
+            if(Qmax<qm && anode>=0 ){
+            	Qmax = qm;
+            	Imax = i;
             }
         }
 
         // read the channel with Qmax
-        for(int d=0; d<m_nDets; d++){
-            h1_Mult[d]->Fill(Mult[d]);
-            int det = raw.fFC_DetNbr[Imax[d]];
-            int anode = raw.fFC_AnodeNbr[Imax[d]];
-            double q1 = raw.fFC_Q1[Imax[d]];
-            double q2 = raw.fFC_Q2[Imax[d]];
-            double q3 = raw.fFC_Q3[Imax[d]];
-            double t_s = raw.fFC_Time[Imax[d]] * 1.e-09 ;
-            int index = 0;
-            for(int i=0; i<det; i++){
-              index += i*m_nAnodes[i];
-            }
-            index += anode - 1;
-            h1_Q1[index]->Fill(q1);
-            h2_Q1vT[index]->Fill(t_s,q1);
-            h1_Q2[index]->Fill(q2);
-            h1_Q3[index]->Fill(q3);
-            //h1_inTofRaw[index]->Fill(raw.fFC_TofRaw[i]);
-            //h1_inTofRaw_GammaPeak[index]->Fill(raw.fFC_TofRaw[i]);
-            if (q3>0) h2_Q2Q3vQ1[index]->Fill(q1,q2/q3);
-        }
+        int anode = raw.fFC_AnodeNbr[Imax];
+        double q1 = raw.fFC_Q1[Imax];
+        double q2 = raw.fFC_Q2[Imax];
+        double q3 = raw.fFC_Q3[Imax];
+        double t_s = raw.fFC_Time[Imax] * 1.e-09 ;
+        int index = mapindex[anode];
+        h1_Mult->Fill(Mult);
+        h2_MvT->Fill(t_s,Mult);
+        h1_Q1[index]->Fill(q1);
+        h2_Q1vT[index]->Fill(t_s,q1);
+        h1_Q2[index]->Fill(q2);
+        h1_Q3[index]->Fill(q3);
+        //h1_inTofRaw[index]->Fill(raw.fFC_TofRaw[i]);
+        //h1_inTofRaw_GammaPeak[index]->Fill(raw.fFC_TofRaw[i]);
+        if (q3>0) h2_Q2Q3vQ1[index]->Fill(q1,q2/q3);
       }// end of if FC data
     }// end of if mult > 0
   }//end of loop over the entries 
 
   cout << endl;
 
-  anode = 0 ;
   TCanvas * can_T0 = new TCanvas("T0","T0",0,0,2500,1500);
   TCanvas * can_mult = new TCanvas("Mult","Mult",0,0,2500,1500);
-  TCanvas * can_Q[m_nDets];
-  TCanvas * can_Q1vT[m_nDets];
-  TCanvas * can_discri[m_nDets];
-  //TCanvas * can_tof_raw[m_nAnodesTot];
-  //TCanvas * can_gamma_peak[m_nAnodesTot];
+  TCanvas * can_Q;
+  TCanvas * can_Q1vT;
+  TCanvas * can_discri;
+  //TCanvas * can_tof_raw[nA];
+  //TCanvas * can_gamma_peak[nA];
   
   can_T0->Divide(1,2);
   can_T0->cd(1); h1_TimeHF->Draw();
@@ -160,48 +227,60 @@ void run(UShort_t run_number, string PA, int Pmbar, int HV)
   cout << "EFFECTIVE BEAM TIME = " << effective_beam_time_s << " s" << endl;
   cout << "NUMBER OF HF: = " << h1_DeltaTimeHF->Integral() << " " << endl;
 
-  can_mult->Divide(1,m_nDets);
-  for(unsigned short d = 0 ; d < m_nDets; d++){
-    can_mult->cd(d+1); h1_Mult[d]->Draw();
+  sprintf(name,"results/Histo_V%s_%imbar_%iVi_%i.C",PA.c_str(),Pmbar,HV,data_set);
+  TFile * fsave = new TFile(name,"recreate");
+  fsave->cd();
+  h1_TimeHF->Write();
+  h1_DeltaTimeHF->Write();
 
-    int ncol = ceil(0.5 * m_nAnodes[d]);
-    cout << "det : " << d+1 << " ncol:" << ncol << endl;
+  can_mult->Divide(2);
+  can_mult->cd(1); h1_Mult->Draw();
+  can_mult->cd(2); h2_MvT->Draw("colz");
+  fsave->cd(); 
+  h1_Mult->Write();
+  h2_MvT->Write();
 
-    sprintf(name,"Q_EPIC%i",d+1);
-    can_Q[d] = new TCanvas(name,name,0,0,2500,1500);
-    can_Q[d]->Divide(ncol,2);   
+  sprintf(name,"Q_V%s_%imbar_%iV",PA.c_str(),Pmbar,HV);
+  can_Q = new TCanvas(name,name,0,0,2500,1500);
+  can_Q->Divide(ncol,2);   
 
-    sprintf(name,"Q1vT_EPIC%i",d+1);
-    can_Q1vT[d] = new TCanvas(name,name,0,0,2500,1500);
-    can_Q1vT[d]->Divide(ncol,2);   
+  sprintf(name,"Q1vT_V%s_%imbar_%iV",PA.c_str(),Pmbar,HV);
+  can_Q1vT = new TCanvas(name,name,0,0,2500,1500);
+  can_Q1vT->Divide(ncol,2);   
 
-    sprintf(name,"DISCRI_EPIC%i",d+1);
-    can_discri[d] = new TCanvas(name,name,0,0,2500,1500);
-    can_discri[d]->Divide(ncol,2);   
+  sprintf(name,"DISCRI");
+  can_discri = new TCanvas(name,name,0,0,2500,1500);
+  can_discri->Divide(ncol,2);   
  
 
-    for(unsigned short a = 0 ; a < m_nAnodes[d]; a++){
+  for(unsigned short a = 0 ; a < nA; a++){
 
-       can_Q[d]->cd(a+1);
-       h1_Q1[anode]->Draw();  h1_Q2[anode]->Draw("same"); h1_Q3[anode]->Draw("same");
+     can_Q->cd(a+1);
+     h1_Q1[a]->Draw();  h1_Q2[a]->Draw("same"); h1_Q3[a]->Draw("same");
 
-       can_Q1vT[d]->cd(a+1);
-       h2_Q1vT[anode]->Draw("colz");
+     can_Q1vT->cd(a+1);
+     h2_Q1vT[a]->Draw("colz");
 
-       can_discri[d]->cd(a+1); gPad->SetLogx();
-       h2_Q2Q3vQ1[anode]->Draw("colz");
+     can_discri->cd(a+1); gPad->SetLogx();
+     h2_Q2Q3vQ1[a]->Draw("colz");
 
-       //sprintf(name,"inTofRaw_EPIC%i_ANODE%i",d+1,a+1);
-       //can_tof_raw[anode] = new TCanvas(name,name,0,0,1500,1000);
-       //can_tof_raw[anode]->cd();
-       //h1_inTofRaw[anode]->Draw();
+     //sprintf(name,"inTofRaw_ANODE%i",a+1);
+     //can_tof_raw[a] = new TCanvas(name,name,0,0,1500,1000);
+     //can_tof_raw[a]->cd();
+     //h1_inTofRaw[a]->Draw();
 
-       //sprintf(name,"GammaPeak_EPIC%i_ANODE%i",d+1,a+1);
-       //can_gamma_peak[anode] = new TCanvas(name,name,0,0,1500,1000);
-       //can_gamma_peak[anode]->cd();
-       //h1_inTofRaw_GammaPeak[anode]->Draw();
-       anode++;
-    }
+     //sprintf(name,"GammaPeak_ANODE%i",a+1);
+     //can_gamma_peak[anode] = new TCanvas(name,name,0,0,1500,1000);
+     //can_gamma_peak[anode]->cd();
+     //h1_inTofRaw_GammaPeak[anode]->Draw();
+     //
+     fsave->cd(); 
+     h1_Q1[a]->Write();  
+     h1_Q2[a]->Write(); 
+     h1_Q3[a]->Write();
+     h2_Q1vT[a]->Write();
+     h2_Q2Q3vQ1[a]->Write();
   }
 
+  fsave->Close();
 }

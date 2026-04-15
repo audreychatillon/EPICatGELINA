@@ -1,11 +1,11 @@
 ConfigEPIC:
   det: 1
   anode: 1
-  cfd_frac: 4
-  cfd_delay: 4
+  cfd_frac: 3
+  cfd_delay: 6
   cfd_thres: 10
   Q1_gate_start: 6
-  Q1_gate_stop: 60
+  Q1_gate_stop: 40
   Q2_gate_start: 6
   Q2_gate_stop: 10
   Q3_gate_start: 10
@@ -14,11 +14,11 @@ ConfigEPIC:
 ConfigEPIC:
   det: 1
   anode: 2
-  cfd_frac: 4
-  cfd_delay: 4
+  cfd_frac: 3
+  cfd_delay: 6
   cfd_thres: 10
   Q1_gate_start: 6
-  Q1_gate_stop: 60
+  Q1_gate_stop: 40
   Q2_gate_start: 6
   Q2_gate_stop: 10
   Q3_gate_start: 10
@@ -27,11 +27,11 @@ ConfigEPIC:
 ConfigEPIC:
   det: 1
   anode: 3
-  cfd_frac: 4
-  cfd_delay: 4
+  cfd_frac: 3
+  cfd_delay: 6
   cfd_thres: 10
   Q1_gate_start: 6
-  Q1_gate_stop: 60
+  Q1_gate_stop: 40
   Q2_gate_start: 6
   Q2_gate_stop: 10
   Q3_gate_start: 10
@@ -40,11 +40,11 @@ ConfigEPIC:
 ConfigEPIC:
   det: 1
   anode: 4
-  cfd_frac: 4
-  cfd_delay: 4
+  cfd_frac: 3
+  cfd_delay: 6
   cfd_thres: 10
   Q1_gate_start: 6
-  Q1_gate_stop: 60
+  Q1_gate_stop: 40
   Q2_gate_start: 6
   Q2_gate_stop: 10
   Q3_gate_start: 10
@@ -53,11 +53,11 @@ ConfigEPIC:
 ConfigEPIC:
   det: 1
   anode: 5
-  cfd_frac: 4
-  cfd_delay: 4
+  cfd_frac: 3
+  cfd_delay: 6
   cfd_thres: 10
   Q1_gate_start: 6
-  Q1_gate_stop: 60
+  Q1_gate_stop: 40
   Q2_gate_start: 6
   Q2_gate_stop: 10
   Q3_gate_start: 10
@@ -66,11 +66,11 @@ ConfigEPIC:
 ConfigEPIC:
   det: 1
   anode: 6
-  cfd_frac: 4
-  cfd_delay: 4
+  cfd_frac: 3
+  cfd_delay: 6
   cfd_thres: 10
   Q1_gate_start: 6
-  Q1_gate_stop: 60
+  Q1_gate_stop: 40
   Q2_gate_start: 6
   Q2_gate_stop: 10
   Q3_gate_start: 10 
@@ -79,11 +79,11 @@ ConfigEPIC:
 ConfigEPIC:
   det: 1
   anode: 7
-  cfd_frac: 4
-  cfd_delay: 4
+  cfd_frac: 3
+  cfd_delay: 6
   cfd_thres: 10
   Q1_gate_start: 6
-  Q1_gate_stop: 60
+  Q1_gate_stop: 40
   Q2_gate_start: 6
   Q2_gate_stop: 10
   Q3_gate_start: 10 
@@ -92,11 +92,11 @@ ConfigEPIC:
 ConfigEPIC:
   det: 1
   anode: 8
-  cfd_frac: 4
-  cfd_delay: 4
+  cfd_frac: 3
+  cfd_delay: 6
   cfd_thres: 10
   Q1_gate_start: 6
-  Q1_gate_stop: 60
+  Q1_gate_stop: 40
   Q2_gate_start: 6
   Q2_gate_stop: 10
   Q3_gate_start: 10 
@@ -105,11 +105,11 @@ ConfigEPIC:
 ConfigEPIC:
   det: 1
   anode: 9
-  cfd_frac: 4
-  cfd_delay: 4
+  cfd_frac: 3
+  cfd_delay: 6
   cfd_thres: 10
   Q1_gate_start: 6
-  Q1_gate_stop: 60
+  Q1_gate_stop: 40
   Q2_gate_start: 6
   Q2_gate_stop: 10
   Q3_gate_start: 10
@@ -118,11 +118,11 @@ ConfigEPIC:
 ConfigEPIC:
   det: 1
   anode: 10
-  cfd_frac: 4
-  cfd_delay: 4
+  cfd_frac: 3
+  cfd_delay: 6
   cfd_thres: 10
   Q1_gate_start: 6
-  Q1_gate_stop: 60
+  Q1_gate_stop: 40
   Q2_gate_start: 6
   Q2_gate_stop: 10
   Q3_gate_start: 10 
@@ -131,11 +131,11 @@ ConfigEPIC:
 ConfigEPIC:
   det: 1
   anode: 11
-  cfd_frac: 4
-  cfd_delay: 4
+  cfd_frac: 3
+  cfd_delay: 6
   cfd_thres: 10
   Q1_gate_start: 6
-  Q1_gate_stop: 60
+  Q1_gate_stop: 40
   Q2_gate_start: 6
   Q2_gate_stop: 10
   Q3_gate_start: 10 
