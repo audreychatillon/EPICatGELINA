@@ -41,10 +41,10 @@ void run(int data_set)
           Pmbar = 1030;
           Q1max = 300000;
           PA    = "4b";
-          ch->Add(Form("../../output/conversion/Test1_V4b_1030mbar_550V.root"));
-          ch->Add(Form("../../output/conversion/Test2_V4b_1030mbar_550V.root"));
-          ch->Add(Form("../../output/conversion/Test5_V4b_1030mbar_550V.root"));
-          ch->Add(Form("../../output/conversion/Test6_V4b_1030mbar_550V.root"));
+          ch->Add(Form("../../output/conversion/Test1_V4b_%imbar_%iV.root",Pmbar,HV));
+          ch->Add(Form("../../output/conversion/Test2_V4b_%imbar_%iV.root",Pmbar,HV));
+          ch->Add(Form("../../output/conversion/Test5_V4b_%imbar_%iV.root",Pmbar,HV));
+          ch->Add(Form("../../output/conversion/Test6_V4b_%imbar_%iV.root",Pmbar,HV));
           break;
      case 2: // PA = V4b, P=1190mbar, HV = 610V
           nA    = 9 ;
@@ -52,7 +52,7 @@ void run(int data_set)
           Pmbar = 1190;
           Q1max = 300000;
           PA    = "4b";
-          ch->Add(Form("../../output/conversion/Test3_V4b_1030mbar_610V.root"));
+          ch->Add(Form("../../output/conversion/Test3_V4b_%imbar_%iV.root",Pmbar,HV));
           break;
      case 3: // PA = V4b, P=1190mbar, HV = 500V
           nA    = 9 ;
@@ -60,7 +60,7 @@ void run(int data_set)
           Pmbar = 1190;
           Q1max = 300000;
           PA    = "4b";
-          ch->Add(Form("../../output/conversion/Test4_V4b_1030mbar_500V.root"));
+          ch->Add(Form("../../output/conversion/Test4_V4b_%imbar_%iV.root",Pmbar,HV));
           break;
      case 4: // PA = V8.2, P=1380mbar, HV = 650V
           nA    = 4 ;
@@ -68,8 +68,8 @@ void run(int data_set)
           Pmbar = 1380;
           Q1max = 400000;
           PA    = "8-2";
-          ch->Add(Form("../../output/conversion/Test9_V8-2_1380mbar_650V.root"));
-          ch->Add(Form("../../output/conversion/Test13_V8-2_1380mbar_650V.root"));
+          ch->Add(Form("../../output/conversion/Test9_V8-2_%imbar_%iV.root",Pmbar,HV));
+          ch->Add(Form("../../output/conversion/Test13_V8-2_%imbar_%iV.root",Pmbar,HV));
           break;
      case 5: // PA = V8.2, P=1040mbar, HV = 550V
           nA    = 4 ;
@@ -77,8 +77,8 @@ void run(int data_set)
           Pmbar = 1040;
           Q1max = 400000;
           PA    = "8-2";
-          ch->Add(Form("../../output/conversion/Test10_V8-2_1040mbar_550V.root"));
-          ch->Add(Form("../../output/conversion/Test12_V8-2_1040mbar_550V.root"));
+          ch->Add(Form("../../output/conversion/Test10_V8-2_%imbar_%iV.root",Pmbar,HV));
+          ch->Add(Form("../../output/conversion/Test12_V8-2_%imbar_%iV.root",Pmbar,HV));
           break;
      case 6: // PA = V8.2, P=1210mbar, HV = 680V
           nA    = 4 ;
@@ -86,7 +86,7 @@ void run(int data_set)
           Pmbar = 1210;
           Q1max = 500000;
           PA    = "8-2";
-          ch->Add(Form("../../output/conversion/Test14_V8-2_1210mbar_680V.root"));
+          ch->Add(Form("../../output/conversion/Test14_V8-2_%imbar_%iV.root",Pmbar,HV));
           break;
      case 7: // PA = V8.2, P=1370mbar, HV = 720V
           nA    = 4 ;
@@ -94,8 +94,8 @@ void run(int data_set)
           Pmbar = 1370;
           Q1max = 500000;
           PA    = "8-2";
-          ch->Add(Form("../../output/conversion/Test15_V8-2_1370mbar_720V.root"));
-          ch->Add(Form("../../output/conversion/Test16_V8-2_1370mbar_720V.root"));
+          ch->Add(Form("../../output/conversion/Test15_V8-2_%imbar_%iV.root",Pmbar,HV));
+          ch->Add(Form("../../output/conversion/Test16_V8-2_%imbar_%iV.root",Pmbar,HV));
           break;
      case 8: // PA = V8.2, P=1075mbar, HV = 720V
           nA    = 4 ;
@@ -103,7 +103,7 @@ void run(int data_set)
           Pmbar = 1075;
           Q1max = 500000;
           PA    = "8-2";
-          ch->Add(Form("../../output/conversion/Test17_V8-2_1075mbar_720V.root"));
+          ch->Add(Form("../../output/conversion/Test17_V8-2_%imbar_%iV.root",Pmbar,HV));
           break;
      default:
           nA    = 0 ;
@@ -194,7 +194,6 @@ void run(int data_set)
  
     double Qmax = 0.;
     short  Imax = -1;
-    int    Mult = 0 ;
     int    fFC_size = (int)raw.fFC_AnodeNbr.size();
 
     // HF dat
@@ -213,8 +212,8 @@ void run(int data_set)
         double t_s = (raw.fFC_Time[Imax]+Toff_runs) * 1.e-09 ;
         
         int index = mapindex[anode];
-        h1_Mult->Fill(Mult);
-        h2_MvT->Fill(t_s,Mult);
+        h1_Mult->Fill(fFC_size);
+        h2_MvT->Fill(t_s,fFC_size);
         h1_Q1[index]->Fill(q1);
         h2_Q1vT[index]->Fill(t_s,q1);
         h1_Q2[index]->Fill(q2);

@@ -20,8 +20,9 @@ void run()
 	TFile * f82_1370 = new TFile("results/Histo_V8-2_1370mbar_720V_7.root","read");
 	TFile * f82_1380 = new TFile("results/Histo_V8-2_1380mbar_650V_4.root","read");
 
-	TCanvas * can_Q1 = new TCanvas("Q1","Q1",0,0,2000,1500);
+	TCanvas * can_Q1 = new TCanvas("V82_Q1","B82_Q1",0,0,2000,1500);
 	can_Q1->Divide(2,2);
+
 	TH1F * h82_1040_Q1[nA];
 	TH1F * h82_1075_Q1[nA];
 	TH1F * h82_1210_Q1[nA];
@@ -29,18 +30,18 @@ void run()
 	TH1F * h82_1380_Q1[nA];
 
 	TCanvas * can_discri[nA]; 
+
 	TH1F * h82_1040_discri[nA];
 	TH1F * h82_1075_discri[nA];
 	TH1F * h82_1210_discri[nA];
 	TH1F * h82_1370_discri[nA];
 	TH1F * h82_1380_discri[nA];
 
-	TLatex t82_1040;  t82_1040.SetNDC();  t82_1040.SetTextSize(0.04);  t82_1040.SetTextColor(kBlue);
-	TLatex t82_1075;  t82_1075.SetNDC();  t82_1075.SetTextSize(0.04);  t82_1075.SetTextColor(kCyan+2);
-	TLatex t82_1210;  t82_1210.SetNDC();  t82_1210.SetTextSize(0.04);  t82_1210.SetTextColor(8);
-	TLatex t82_1370;  t82_1370.SetNDC();  t82_1370.SetTextSize(0.04);  t82_1370.SetTextColor(kRed+1);
-	TLatex t82_1380;  t82_1380.SetNDC();  t82_1380.SetTextSize(0.04);  t82_1380.SetTextColor(kMagenta);
-
+	TLatex t82_1040;  t82_1040.SetNDC();  t82_1040.SetTextSize(0.025);  t82_1040.SetTextColor(kBlue);
+	TLatex t82_1075;  t82_1075.SetNDC();  t82_1075.SetTextSize(0.025);  t82_1075.SetTextColor(kCyan+2);
+	TLatex t82_1210;  t82_1210.SetNDC();  t82_1210.SetTextSize(0.025);  t82_1210.SetTextColor(8);
+	TLatex t82_1370;  t82_1370.SetNDC();  t82_1370.SetTextSize(0.025);  t82_1370.SetTextColor(kRed+1);
+	TLatex t82_1380;  t82_1380.SetNDC();  t82_1380.SetTextSize(0.025);  t82_1380.SetTextColor(kMagenta);
 
 	for(int a = 0 ; a < nA ; a++){
 
@@ -59,7 +60,7 @@ void run()
 
 		sprintf(name,"Q1_A%i_5",anode[a]);
 		h82_1040_Q1[a] = (TH1F*)f82_1040->Get(name);
-		sprintf(name,"Q1_A%i_P1040mbar_550Vi_scaled",anode[a]);
+		sprintf(name,"Q1_A%i_P1040mbar_550V",anode[a]);
 		h82_1040_Q1[a]->SetTitle(name);
 		h82_1040_Q1[a]->SetName(name);
 		h82_1040_Q1[a]->SetLineColor(kBlue);
@@ -93,6 +94,7 @@ void run()
 		h82_1075_Q1[a]->SetTitle(name);
 		h82_1075_Q1[a]->SetName(name);
 		h82_1075_Q1[a]->SetLineColor(kCyan+2);
+		h82_1075_Q1[a]->SetLineWidth(2);
 		h82_1075_Q1[a]->Rebin(40);
 		h82_1075_Q1[a]->Scale(0.5*42866./(9429.));
 		h82_1075_Q1[a]->SetDirectory(0);
@@ -175,5 +177,41 @@ void run()
 	
 	}
 
+	TCanvas * canSANDIA = new TCanvas("SANDIA","SANDIA",0,0,1000,1000);
+	canSANDIA->cd(); gPad->SetLogy(); 
+	h82_1040_Q1[3]->Draw("hist");        
+	h82_1040_Q1[3]->GetXaxis()->SetRangeUser(15000,400000);        
+	h82_1040_Q1[3]->GetXaxis()->SetTitle("total charge");        
+	h82_1210_Q1[3]->Draw("hist same");
+	h82_1370_Q1[3]->Draw("hist same");
+	h82_1380_Q1[3]->Draw("hist same");
+	h82_1075_Q1[3]->Draw("hist same");
+	
+	t82_1040.DrawLatex(0.15,0.91,"1040 mbar, 550 V");
+	t82_1210.DrawLatex(0.15,0.87,"1210 mbar, 680 V");
+	t82_1370.DrawLatex(0.15,0.83,"1370 mbar, 720 V");
+	t82_1380.DrawLatex(0.15,0.79,"1380 mbar, 650 V");
+	t82_1075.DrawLatex(0.15,0.75,"1075 mbar, 720 V");
 
+	TPad * p1 = new TPad("discri","discri",0.5,0.6,1.0,1.0);
+	canSANDIA->cd(); p1->Draw(); p1->cd(); 
+	gPad->SetGridx(); gPad->SetGridy(); gPad->SetLogz(); gPad->SetLogx(); 
+	h82_1075_discri[3]->Draw("col");
+	h82_1075_discri[3]->GetXaxis()->SetTitle("total charge");
+	h82_1075_discri[3]->GetYaxis()->SetTitle("pulse shape discri");
+
+	TH1F * h82clone_1040_Q1 = (TH1F*)h82_1040_Q1[3]->Clone();
+	TH1F * h82clone_1075_Q1 = (TH1F*)h82_1075_Q1[3]->Clone();
+	TH1F * h82clone_1210_Q1 = (TH1F*)h82_1210_Q1[3]->Clone();
+	TH1F * h82clone_1370_Q1 = (TH1F*)h82_1370_Q1[3]->Clone();
+	TH1F * h82clone_1380_Q1 = (TH1F*)h82_1380_Q1[3]->Clone();
+	TPad * p2 = new TPad("discri","discri",0.15,0.06,0.4,0.4);
+	canSANDIA->cd(); p2->Draw(); p2->cd(); 
+	h82clone_1040_Q1->Draw("hist");        
+	h82clone_1040_Q1->GetXaxis()->SetRangeUser(15000,40000);        
+	h82clone_1040_Q1->GetXaxis()->SetTitle("total charge");        
+	h82clone_1210_Q1->Draw("hist same");
+	h82clone_1370_Q1->Draw("hist same");
+	h82clone_1380_Q1->Draw("hist same");
+	h82clone_1075_Q1->Draw("hist same");
 }
