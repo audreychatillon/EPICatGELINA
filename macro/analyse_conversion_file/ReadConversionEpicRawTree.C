@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <ctype.h>
 #include <math.h>
@@ -79,6 +80,31 @@ void run(int data_set)
           ch->Add(Form("../../output/conversion/Test10_V8-2_1040mbar_550V.root"));
           ch->Add(Form("../../output/conversion/Test12_V8-2_1040mbar_550V.root"));
           break;
+     case 6: // PA = V8.2, P=1210mbar, HV = 680V
+          nA    = 4 ;
+          HV    = 680;
+          Pmbar = 1210;
+          Q1max = 500000;
+          PA    = "8-2";
+          ch->Add(Form("../../output/conversion/Test14_V8-2_1210mbar_680V.root"));
+          break;
+     case 7: // PA = V8.2, P=1370mbar, HV = 720V
+          nA    = 4 ;
+          HV    = 720;
+          Pmbar = 1370;
+          Q1max = 500000;
+          PA    = "8-2";
+          ch->Add(Form("../../output/conversion/Test15_V8-2_1370mbar_720V.root"));
+          ch->Add(Form("../../output/conversion/Test16_V8-2_1370mbar_720V.root"));
+          break;
+     case 8: // PA = V8.2, P=1075mbar, HV = 720V
+          nA    = 4 ;
+          HV    = 720;
+          Pmbar = 1075;
+          Q1max = 500000;
+          PA    = "8-2";
+          ch->Add(Form("../../output/conversion/Test17_V8-2_1075mbar_720V.root"));
+          break;
      default:
           nA    = 0 ;
           HV    = 0 ;
@@ -146,7 +172,7 @@ void run(int data_set)
      h1_Q3[a]->SetDirectory(0);
 
      sprintf(name,"discri_A%i_%i",mapanode[a],data_set);
-     h2_Q2Q3vQ1[a] = new TH2F(name,name,2500,0,500000,300,0,3);
+     h2_Q2Q3vQ1[a] = new TH2F(name,name,2500,0,500000,500,0,5);
      h2_Q2Q3vQ1[a]->SetDirectory(0);
 
      //sprintf(name,"inTofRaw_A%i",mapanode[a]);
@@ -159,6 +185,7 @@ void run(int data_set)
   
   // ===========================================================================================
   // === LOOP
+  double Toff_runs = 0;
   ULong64_t nentries = (ULong64_t)ch->GetEntries();
   cout << "number of entries: " << nentries << endl;
   for(ULong64_t Entry=0; Entry<nentries; Entry++){
@@ -166,33 +193,25 @@ void run(int data_set)
     if ((Entry % 1000000)==0) cout << "\r === Entry = " << Entry << " === " << flush;
  
     double Qmax = 0.;
-    int    Imax = -1;
+    short  Imax = -1;
     int    Mult = 0 ;
+    int    fFC_size = (int)raw.fFC_AnodeNbr.size();
 
+    // HF dat
+    if(raw.fQmax_Index == -1){
+       h1_TimeHF->Fill(1.e-09*raw.fHF_Time); 
+       h1_DeltaTimeHF->Fill(1.e-06*(raw.fHF_Time-raw.fHF_TimePrev)); 
+    } 
     // get the channel with Qmax
-    int fFC_size = (int)raw.fFC_AnodeNbr.size();
-    if (fFC_size>0){
-      if(raw.fFC_AnodeNbr[0] < 0){
-         h1_TimeHF->Fill(1.e-09*raw.fHF_Time); 
-         h1_DeltaTimeHF->Fill(1.e-06*(raw.fHF_Time-raw.fHF_TimePrev)); 
-      } // end of if HF data
-      else{
-        for(int i=0; i<fFC_size; i++){
-            int anode = raw.fFC_AnodeNbr[i];
-            double qm = raw.fFC_Qmax[i];
-            Mult++;
-            if(Qmax<qm && anode>=0 ){
-            	Qmax = qm;
-            	Imax = i;
-            }
-        }
-
-        // read the channel with Qmax
+    else if (fFC_size>0){
+        Imax = raw.fQmax_Index;
+	// read the channel with Qmax
         int anode = raw.fFC_AnodeNbr[Imax];
         double q1 = raw.fFC_Q1[Imax];
         double q2 = raw.fFC_Q2[Imax];
         double q3 = raw.fFC_Q3[Imax];
-        double t_s = raw.fFC_Time[Imax] * 1.e-09 ;
+        double t_s = (raw.fFC_Time[Imax]+Toff_runs) * 1.e-09 ;
+        
         int index = mapindex[anode];
         h1_Mult->Fill(Mult);
         h2_MvT->Fill(t_s,Mult);
@@ -203,7 +222,6 @@ void run(int data_set)
         //h1_inTofRaw[index]->Fill(raw.fFC_TofRaw[i]);
         //h1_inTofRaw_GammaPeak[index]->Fill(raw.fFC_TofRaw[i]);
         if (q3>0) h2_Q2Q3vQ1[index]->Fill(q1,q2/q3);
-      }// end of if FC data
     }// end of if mult > 0
   }//end of loop over the entries 
 
@@ -227,7 +245,7 @@ void run(int data_set)
   cout << "EFFECTIVE BEAM TIME = " << effective_beam_time_s << " s" << endl;
   cout << "NUMBER OF HF: = " << h1_DeltaTimeHF->Integral() << " " << endl;
 
-  sprintf(name,"results/Histo_V%s_%imbar_%iVi_%i.C",PA.c_str(),Pmbar,HV,data_set);
+  sprintf(name,"results/Histo_V%s_%imbar_%iV_%i.root",PA.c_str(),Pmbar,HV,data_set);
   TFile * fsave = new TFile(name,"recreate");
   fsave->cd();
   h1_TimeHF->Write();

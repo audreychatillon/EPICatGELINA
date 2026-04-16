@@ -70,7 +70,7 @@ void run(UShort_t run_number, string PA, int Pmbar, int HV)
        h1_Q3[anode]->SetDirectory(0);
 
        sprintf(name,"discri_EPIC%i_A%i",d+1,a+1);
-       h2_Q2Q3vQ1[anode] = new TH2F(name,name,2500,0,500000,300,0,3);
+       h2_Q2Q3vQ1[anode] = new TH2F(name,name,2500,0,500000,500,0,5);
        h2_Q2Q3vQ1[anode]->SetDirectory(0);
 
        //sprintf(name,"inTofRaw_EPIC%i_A%i",d+1,a+1);
@@ -106,14 +106,14 @@ void run(UShort_t run_number, string PA, int Pmbar, int HV)
     	Mult[d] = 0;
     }
 
-    // get the channel with Qmax
     int mult = raw.fFC_DetNbr.size();
-    if (mult>0){
-      if(raw.fFC_DetNbr[0] < 0){
+    // Get HF data
+    if(raw.fQmax_Index == -1){
          h1_TimeHF->Fill(1.e-09*raw.fHF_Time); 
          h1_DeltaTimeHF->Fill(1.e-06*(raw.fHF_Time-raw.fHF_TimePrev)); 
-      } // end of if HF data
-      else{
+    }
+    // get the channel per detecrtor with Qmax
+    else if (mult > 0){
         for(int i=0; i<mult; i++){
             int det = raw.fFC_DetNbr[i];
             double qm = raw.fFC_Qmax[i];
@@ -147,7 +147,6 @@ void run(UShort_t run_number, string PA, int Pmbar, int HV)
             //h1_inTofRaw_GammaPeak[index]->Fill(raw.fFC_TofRaw[i]);
             if (q3>0) h2_Q2Q3vQ1[index]->Fill(q1,q2/q3);
         }
-      }// end of if FC data
     }// end of if mult > 0
   }//end of loop over the entries 
 

@@ -33,7 +33,7 @@
 
 #if DISPLAY_STYLE == 2 
 
-#define LATENCE_DISPLAY_MS 150 
+#define LATENCE_DISPLAY_MS 100 
 
 #if PLOT_REJECTED_SIGNAL
 #define can_rej_Xstart 0
@@ -315,8 +315,8 @@ void run(int data_set)
 
     int    index   ;
 
-    int            i_qmax;
-    double         q_qmax;
+    int    i_qmax;
+    double q_qmax;
 
 
     // ===========================================================================================
@@ -365,6 +365,21 @@ void run(int data_set)
             Q1max = 300000;
             ch->Add(Form("../../output/conversion/Test10_V8-2_1040mbar_550V.root"));
             ch->Add(Form("../../output/conversion/Test12_V8-2_1040mbar_550V.root"));
+            break;
+       case 6: // PA = V8.2, P=1210mbar, HV = 680V
+            nA    = 4 ;
+            HV    = 680;
+            Pmbar = 1210;
+            Q1max = 500000;
+            ch->Add(Form("../../output/conversion/Test14_V8-2_1210mbar_680V.root"));
+            break;
+       case 7: // PA = V8.2, P=1370mbar, HV = 720V
+            nA    = 4 ;
+            HV    = 720;
+            Pmbar = 1370;
+            Q1max = 500000;
+            ch->Add(Form("../../output/conversion/Test15_V8-2_1370mbar_720V.root"));
+            ch->Add(Form("../../output/conversion/Test16_V8-2_1370mbar_720V.root"));
             break;
        default:
             nA    = 0 ;
@@ -502,33 +517,45 @@ void run(int data_set)
 
     // ===========================================================================================
     // === LOOP
+    double TimeOffset = 0 ;
     Long64_t nentries = (Long64_t)ch->GetEntries();
     for(Long64_t entry = 0 ; entry < nentries ; entry++){
 
         ch->GetEntry(entry);
+#if DISPLAY_STYLE == 2
+        if ((entry % 50)==0) cout << "\r === Entry = " << entry << " / " << nentries << " === " << flush;
+#elif
         if ((entry % 1000000)==0) cout << "\r === Entry = " << entry << " / " << nentries << " === " << flush;
-	
+#endif	
 
         int fFC_size = (int)raw.fFC_AnodeNbr.size() ; 
         if (fFC_size<=0) continue;
+        if (raw.fQmax_Index == -1) continue; //fHF data only
 
-        // === initialization
-        i_qmax = -1 ;
-        q_qmax =  0 ;
+        
+	//// === initialization
+        //i_qmax = -1 ;
+        //q_qmax =  0 ;
 
-        // === find Qmax data in fFC
-        for(int i = 0 ; i < fFC_size ; i++){
-            // get data
-            qmax = raw.fFC_Qmax[i];
-            // find qmax 
-            if(qmax>q_qmax){
-                q_qmax = qmax  ;
-                i_qmax = i     ;
-            }
-        }// end for(i)
+        //// === find Qmax data in fFC
+        //for(int i = 0 ; i < fFC_size ; i++){
+        //    // get data
+        //    qmax = raw.fFC_Qmax[i];
+        //    // find qmax 
+        //    if(qmax>q_qmax){
+        //        q_qmax = qmax  ;
+        //        i_qmax = i     ;
+        //    }
+        //}// end for(i)
 
-        if(i_qmax != raw.fQmax_Index) cout << "i_qmax = " << i_qmax << ", fQmax_Index = " << raw.fQmax_Index << endl;
-        if(i_qmax>=0 && i_qmax == raw.fQmax_Index){
+        //if(i_qmax != raw.fQmax_Index){
+	//	cout << endl << "@entry " << entry << "  : i_qmax = " << i_qmax << ", fQmax_Index = " << raw.fQmax_Index << endl;
+        //	cout << " --- fFC_size = " << fFC_size << endl;
+	//	for(int i = 0 ; i < fFC_size ; i++)
+	//		cout << "      raw.fFC_Qmax[" << i << "] = " << raw.fFC_Qmax[i] << endl;
+	//
+	i_qmax = raw.fQmax_Index ;}
+	if(i_qmax>=0 && i_qmax == raw.fQmax_Index){
           anode  = raw.fFC_AnodeNbr[i_qmax];
           qmax   = raw.fFC_Qmax[i_qmax];
           q1     = raw.fFC_Q1[i_qmax];
