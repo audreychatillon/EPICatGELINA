@@ -1,6 +1,7 @@
 build/
 install/
 output/
+macro/analyse_conversion_file/results/
 
 *.o
 *.so
@@ -9,3 +10,4 @@ output/
 *.d
 *.pcm
 .*
+*.png

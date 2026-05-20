@@ -104,6 +104,15 @@ void run(int data_set)
           Q1max = 500000;
           PA    = "8-2";
           ch->Add(Form("../../output/conversion/Test17_V8-2_%imbar_%iV.root",Pmbar,HV));
+          ch->Add(Form("../../output/conversion/Test18_V8-2_%imbar_%iV.root",Pmbar,HV));
+          break;
+     case 9: // PA = V8.2, P=1065mbar, HV = 750V
+          nA    = 4 ;
+          HV    = 750;
+          Pmbar = 1065;
+          Q1max = 500000;
+          PA    = "8-2";
+          ch->Add(Form("../../output/conversion/Test19_V8-2_%imbar_%iV.root",Pmbar,HV));
           break;
      default:
           nA    = 0 ;
