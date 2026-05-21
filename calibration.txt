@@ -1,3 +1,4 @@
 CalibrationFilePath
-  ./calibration/EPIC_raw.cal
+  ./calibration/Alpha_1Dcut.cal
+  ./calibration/Gamma_Peak.cal
 

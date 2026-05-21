@@ -1,14 +1,30 @@
 #include "Analysis.h"
 #include "NPApplication.h"
+
+using namespace std;
+using namespace nptool;
+
+////////////////////////////////////////////////////////////////////////////////
+void user_analysis::Analysis::SetDataOutput(std::shared_ptr<nptool::VDataOutput> output) {
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////
 void user_analysis::Analysis::Init() {
   auto app = nptool::Application::GetApplication();
-  // mydetector = std::dynamic_pointer_cast<my_detector::MyDetector>(app->GetDetector("mydetector"));
+  epic = std::dynamic_pointer_cast<epic::EpicDetector>(app->GetDetector("epic"));
 }
+
+
 ////////////////////////////////////////////////////////////////////////////////
 void user_analysis::Analysis::TreatEvent() {}
+
+
+
 ////////////////////////////////////////////////////////////////////////////////
 void user_analysis::Analysis::End() {}
+
+
 ////////////////////////////////////////////////////////////////////////////////
 extern "C" {
 std::shared_ptr<nptool::VUserAnalysis> ConstructUserAnalysis() { return std::make_shared<user_analysis::Analysis>(); }

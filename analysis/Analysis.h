@@ -1,5 +1,6 @@
 #include "NPVUserAnalysis.h"
-// #include "MyDetector.h"
+#include "EpicDetector.h"
+
 namespace user_analysis {
   class Analysis : public nptool::VUserAnalysis {
    public:
@@ -9,6 +10,7 @@ namespace user_analysis {
    public:
     void Init();
     void TreatEvent();
+    void SetDataOutput(std::shared_ptr<nptool::VDataOutput>);
     // if this method return false, the event is discarded
     // Caution : this change the size of the tree,
     // so the friend mecanism no longer work
@@ -16,6 +18,6 @@ namespace user_analysis {
     void End();
 
    private:
-    //  std::shared_ptr<my_detector::MyDetector> mydetector;
+    std::shared_ptr<epic::EpicDetector> epic;
   };
 } // namespace user_analysis
