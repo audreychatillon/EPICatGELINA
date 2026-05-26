@@ -1,4 +1,5 @@
 CalibrationFilePath
   ./calibration/Alpha_1Dcut.cal
   ./calibration/Gamma_Peak.cal
+  ./calibration/TCutG_pts.cal
 
