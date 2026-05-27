@@ -52,14 +52,26 @@ To read FASTER data, configuration files must be provided:
  - `detector/detector.yaml`[example](https://github.com/audreychatillon/EPICatGELINA/blob/main/detector/detector_run24.yaml)
  - `ConfigEPIC.dat`[example](https://github.com/audreychatillon/EPICatGELINA/blob/main/config_files/ConfigEPIC_run24.dat)
 
-To write a TTree in output/conversion folder (see project.yaml) 
+The command `npconversion` is processing the function `EpicDetector::BuildRawEvent()` to fill data at raw level as defined in `EpicData`
+To write raw TTree in output/conversion folder (see project.yaml) 
 ```bash
-npconversion --input faster,sample.pid,/path/to/FASTER/data/name_faster_file_num.fast --output root,EpicRawTree,raw_num.root
+npconversion --input faster,sample.pid,/path/to/faster_file_num.fast --output root,EpicRawTree,raw_num.root
 ```
 
-For on-line monitoriing in a browser with localhost:8082
+For on-line monitoring of raw histograms use the flag `--input-raw`.
+If you want to monitor in a browser with localhost:8082:
 ```bash
 npconversion --input faster,sample.pid,/path/to/FASTER/data/name_faster_file_num.fast --output root,8081
 nponline --input-raw root,localhost:8081 --interface root,8082
+```
+
+To convert FASTER data and build physical event by applying calibration parameters, 
+you should add in `project.yaml` in the `default flag` line `--calibration calibration.txt` which gives the path of all calibration files.
+Then run the command `npanalysis` to process the function `EpicDetector::BuildPhysicalEvent()` to fill data at calibration level as defined in `EpicPhysics`.
+To monitore the calibrated spectra use the flag `--input-phy`
+```bash
+npconversion --input faster,sample.pid,file.fast  --output root,8080
+npanalysis --input root,localhost:8080 --output root,8081
+nponline --input-raw root,localhost:8080 --input-phy root,localhost:8081 --interface root,8082
 ```
 
