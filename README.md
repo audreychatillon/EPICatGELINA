@@ -1,11 +1,11 @@
-###Project using the epic plugin with NPTool V4
+### Project using the epic plugin with NPTool V4
 
 **epic** is a plugin for **NPTool V4**, inspired (copied) from the fission chamber plugin.
 We try to avoid hard-coding.
 It can be used in project with several fission chambers, having different number of anodes, with different actinides 
 
 
-## epic plugin management
+## `epic` plugin management
 
 For plugin management:
 [Plugins Management](https://nptool.in2p3.fr/manual-v4/plugins-management/)
@@ -45,7 +45,7 @@ cd output
 mkdir analysis conversion simulation
 ```
 
-## read raw FASTER data
+## Read raw FASTER data
 To read FASTER data, configuration files must be provided:
  - `sample.pid`[example with one fission chamber](https://github.com/audreychatillon/EPICatGELINA/blob/main/pid_files/sample_EPICatGELINA.pid), [example with two fission chambers](https://github.com/audreychatillon/EPIC_WNR_90L/blob/main/pid_files/sample_EPICproto_run24.pid)
  - `detector/detector.yaml`[example with one fission chamber](https://github.com/audreychatillon/EPICatGELINA/blob/main/detector/detector.yaml),[example with two fission chambers](https://github.com/audreychatillon/EPIC_WNR_90L/blob/main/detector/detector_run24.yaml)
@@ -64,6 +64,7 @@ npconversion --input faster,sample.pid,/path/to/FASTER/data/name_faster_file_num
 nponline --input-raw root,localhost:8081 --interface root,8082
 ```
 
+## Apply calibration parameters
 To convert FASTER data and build physical event by applying calibration parameters, 
 you should add in `project.yaml` in the `default flag` line `--calibration calibration.txt` which gives the path of all calibration files.
 Then run the command `npanalysis` to process the function `EpicDetector::BuildPhysicalEvent()` to fill data at calibration level as defined in `EpicPhysics`.
