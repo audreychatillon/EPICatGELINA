@@ -2,6 +2,6 @@ epic:
  POS: 0 0 10000
  nANODES: 9
  zOFFSET_A1: -29.6
- DZ_prevA:     0.0  6.0  5.8  6.0 11.8 11.8  5.8  6.0  5.8
+ DZ_prevA:     0.0  5.8  6.2  5.8 12.0 12.0  6.2  5.8  6.2
  actinide:    238U 235U 235U 235U 238U 235U 235U 235U 238U
  AnodeNumber:    1    2    3    4    6    8    9   10   11 
