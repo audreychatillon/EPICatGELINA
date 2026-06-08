@@ -2,7 +2,7 @@ ConfigEPIC:
   det: 1
   anode: 3
   cfd_frac: 3
-  cfd_delay: 6
+  cfd_delay: 8
   cfd_thres: 10
   Q1_gate_start: 6
   Q1_gate_stop: 40
@@ -10,12 +10,13 @@ ConfigEPIC:
   Q2_gate_stop: 10
   Q3_gate_start: 10
   Q3_gate_stop: 40
+  Q4_gate_stop: 80
   RawTof_MaxLimit: -1
 ConfigEPIC:
   det: 1
   anode: 4
   cfd_frac: 3
-  cfd_delay: 6
+  cfd_delay: 8
   cfd_thres: 10
   Q1_gate_start: 6
   Q1_gate_stop: 40
@@ -23,12 +24,13 @@ ConfigEPIC:
   Q2_gate_stop: 10
   Q3_gate_start: 10
   Q3_gate_stop: 40
+  Q4_gate_stop: 80
   RawTof_MaxLimit: -1
 ConfigEPIC:
   det: 1
   anode: 9
   cfd_frac: 3
-  cfd_delay: 6
+  cfd_delay: 8
   cfd_thres: 10
   Q1_gate_start: 6
   Q1_gate_stop: 40
@@ -36,12 +38,13 @@ ConfigEPIC:
   Q2_gate_stop: 10
   Q3_gate_start: 10
   Q3_gate_stop: 40
+  Q4_gate_stop: 80
   RawTof_MaxLimit: -1
 ConfigEPIC:
   det: 1
   anode: 10
   cfd_frac: 3
-  cfd_delay: 6
+  cfd_delay: 8
   cfd_thres: 10
   Q1_gate_start: 6
   Q1_gate_stop: 40
@@ -49,5 +52,6 @@ ConfigEPIC:
   Q2_gate_stop: 10
   Q3_gate_start: 10 
   Q3_gate_stop: 40
+  Q4_gate_stop: 80
   RawTof_MaxLimit: -1
   get_sampler_qmax: 1
