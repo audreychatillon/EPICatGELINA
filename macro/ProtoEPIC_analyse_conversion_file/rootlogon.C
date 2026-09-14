@@ -3,4 +3,5 @@
 	//gStyle->SetOptStat(1111111);
 	gStyle->SetOptStat(0);
 	gSystem->Load("../ClassDef/EpicRawTree_C.so");
+	gSystem->Load("../ClassDef/EpicPreTreat_C.so");
 }

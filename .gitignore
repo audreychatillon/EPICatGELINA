@@ -1,7 +1,7 @@
 build/
 install/
 output/
-macro/analyse_conversion_file/results/
+macro/ProtoEPIC_analyse_conversion_file/results/
 
 *.o
 *.so

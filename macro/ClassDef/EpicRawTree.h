@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Sun Apr  5 16:37:53 2026 by ROOT version 6.32.06
+// Wed Jun 10 15:28:46 2026 by ROOT version 6.32.06
 // from TTree EpicRawTree/nptool tree
-// found on file: ../../output/conversion/raw_run19.root
+// found on file: ../../output/conversion/Test3_V4b_1190mbar_610V.root
 //////////////////////////////////////////////////////////
 
 #ifndef EpicRawTree_h
@@ -12,7 +12,6 @@
 #include <TChain.h>
 #include <TFile.h>
 
-
 class EpicRawTree {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
@@ -21,6 +20,7 @@ public :
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
    // Declaration of leaf types
+ //epic::EpicData  *epic;
    vector<short>   fFC_DetNbr;
    vector<short>   fFC_AnodeNbr;
    vector<bool>    fFC_PulserTrig;
@@ -32,6 +32,8 @@ public :
    vector<double>  fFC_Q1;
    vector<double>  fFC_Q2;
    vector<double>  fFC_Q3;
+   vector<double>  fFC_Q4;
+   Double_t        fFC_TimeLastHF;
    Short_t         fQmax_Index;
    vector<double>  fQmax_Sampler;
    Double_t        fHF_Time;
@@ -49,6 +51,8 @@ public :
    TBranch        *b_epic_fFC_Q1;   //!
    TBranch        *b_epic_fFC_Q2;   //!
    TBranch        *b_epic_fFC_Q3;   //!
+   TBranch        *b_epic_fFC_Q4;   //!
+   TBranch        *b_epic_fFC_TimeLastHF;   //!
    TBranch        *b_epic_fQmax_Index;   //!
    TBranch        *b_epic_fQmax_Sampler;   //!
    TBranch        *b_epic_fHF_Time;   //!

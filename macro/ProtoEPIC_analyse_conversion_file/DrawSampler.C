@@ -31,7 +31,7 @@
 
 #define PLOT_MEAN_SIGNALS    1
 #define PLOT_REJECTED_SIGNAL 0
-#define DISPLAY_STYLE        0 // 0: no online-display, 1: press enter, 2: latence display, 3: double-click
+#define DISPLAY_STYLE        2 // 0: no online-display, 1: press enter, 2: latence display, 3: double-click
 
 #if DISPLAY_STYLE == 2
 #define LATENCE_DISPLAY_MS 1500

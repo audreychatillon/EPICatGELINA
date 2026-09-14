@@ -56,35 +56,7 @@ ConfigEPIC:
   RawTof_MaxLimit: -1
 ConfigEPIC:
   det: 1
-  anode: 5
-  cfd_frac: 3
-  cfd_delay: 4
-  cfd_thres: 10
-  Q1_gate_start: 6
-  Q1_gate_stop: 40
-  Q2_gate_start: 6
-  Q2_gate_stop: 10
-  Q3_gate_start: 10
-  Q3_gate_stop: 40
-  Q4_gate_stop: 80
-  RawTof_MaxLimit: -1
-ConfigEPIC:
-  det: 1
   anode: 6
-  cfd_frac: 3
-  cfd_delay: 4
-  cfd_thres: 10
-  Q1_gate_start: 6
-  Q1_gate_stop: 40
-  Q2_gate_start: 6
-  Q2_gate_stop: 10
-  Q3_gate_start: 10 
-  Q3_gate_stop: 40
-  Q4_gate_stop: 80
-  RawTof_MaxLimit: -1
-ConfigEPIC:
-  det: 1
-  anode: 7
   cfd_frac: 3
   cfd_delay: 4
   cfd_thres: 10
