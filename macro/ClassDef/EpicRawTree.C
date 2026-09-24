@@ -8,9 +8,9 @@ EpicRawTree::EpicRawTree(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("../../output/conversion/Test3_V4b_1190mbar_610V.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("../../output/conversion/raw18.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("../../output/conversion/Test3_V4b_1190mbar_610V.root");
+         f = new TFile("../../output/conversion/raw18.root");
       }
       f->GetObject("EpicRawTree",tree);
 
@@ -59,23 +59,25 @@ void EpicRawTree::Init(TTree *tree)
    fCurrent = -1;
    fChain->SetMakeClass(1);
 
-   fChain->SetBranchAddress("fFC_DetNbr", &fFC_DetNbr, &b_epic_fFC_DetNbr);
-   fChain->SetBranchAddress("fFC_AnodeNbr", &fFC_AnodeNbr, &b_epic_fFC_AnodeNbr);
-   fChain->SetBranchAddress("fFC_PulserTrig", &fFC_PulserTrig, &b_epic_fFC_PulserTrig);
-   fChain->SetBranchAddress("fFC_Time", &fFC_Time, &b_epic_fFC_Time);
-   fChain->SetBranchAddress("fFC_TofRaw", &fFC_TofRaw, &b_epic_fFC_TofRaw);
-   fChain->SetBranchAddress("fFC_TimeCfd", &fFC_TimeCfd, &b_epic_fFC_TimeCfd);
-   fChain->SetBranchAddress("fFC_TimeQmax", &fFC_TimeQmax, &b_epic_fFC_TimeQmax);
-   fChain->SetBranchAddress("fFC_Qmax", &fFC_Qmax, &b_epic_fFC_Qmax);
-   fChain->SetBranchAddress("fFC_Q1", &fFC_Q1, &b_epic_fFC_Q1);
-   fChain->SetBranchAddress("fFC_Q2", &fFC_Q2, &b_epic_fFC_Q2);
-   fChain->SetBranchAddress("fFC_Q3", &fFC_Q3, &b_epic_fFC_Q3);
-   fChain->SetBranchAddress("fFC_Q4", &fFC_Q4, &b_epic_fFC_Q4);
-   fChain->SetBranchAddress("fFC_TimeLastHF", &fFC_TimeLastHF, &b_epic_fFC_TimeLastHF);
-   fChain->SetBranchAddress("fQmax_Index", &fQmax_Index, &b_epic_fQmax_Index);
-   fChain->SetBranchAddress("fQmax_Sampler", &fQmax_Sampler, &b_epic_fQmax_Sampler);
-   fChain->SetBranchAddress("fHF_Time", &fHF_Time, &b_epic_fHF_Time);
-   fChain->SetBranchAddress("fHF_TimePrev", &fHF_TimePrev, &b_epic_fHF_TimePrev);
+   fChain->SetBranchAddress("epic.fFC_DetNbr", &fFC_DetNbr, &b_epic_fFC_DetNbr);
+   fChain->SetBranchAddress("epic.fFC_AnodeNbr", &fFC_AnodeNbr, &b_epic_fFC_AnodeNbr);
+   fChain->SetBranchAddress("epic.fFC_PulserTrig", &fFC_PulserTrig, &b_epic_fFC_PulserTrig);
+   fChain->SetBranchAddress("epic.fFC_Time", &fFC_Time, &b_epic_fFC_Time);
+   fChain->SetBranchAddress("epic.fFC_TofRaw", &fFC_TofRaw, &b_epic_fFC_TofRaw);
+   fChain->SetBranchAddress("epic.fFC_TimeCfd", &fFC_TimeCfd, &b_epic_fFC_TimeCfd);
+   fChain->SetBranchAddress("epic.fFC_TimeQmax", &fFC_TimeQmax, &b_epic_fFC_TimeQmax);
+   fChain->SetBranchAddress("epic.fFC_Qmax", &fFC_Qmax, &b_epic_fFC_Qmax);
+   fChain->SetBranchAddress("epic.fFC_Q1", &fFC_Q1, &b_epic_fFC_Q1);
+   fChain->SetBranchAddress("epic.fFC_Q2", &fFC_Q2, &b_epic_fFC_Q2);
+   fChain->SetBranchAddress("epic.fFC_Q3", &fFC_Q3, &b_epic_fFC_Q3);
+   fChain->SetBranchAddress("epic.fFC_Q4", &fFC_Q4, &b_epic_fFC_Q4);
+   fChain->SetBranchAddress("epic.fFC_IsFission", &fFC_IsFission, &b_epic_fFC_IsFission);
+   fChain->SetBranchAddress("epic.fFC_DeltaTimeHF", &fFC_DeltaTimeHF, &b_epic_fFC_DeltaTimeHF);
+   fChain->SetBranchAddress("epic.fFC_TimeLastHF", &fFC_TimeLastHF, &b_epic_fFC_TimeLastHF);
+   fChain->SetBranchAddress("epic.fQmax_Index", &fQmax_Index, &b_epic_fQmax_Index);
+   fChain->SetBranchAddress("epic.fQmax_Sampler", &fQmax_Sampler, &b_epic_fQmax_Sampler);
+   fChain->SetBranchAddress("epic.fHF_Time", &fHF_Time, &b_epic_fHF_Time);
+   fChain->SetBranchAddress("epic.fHF_TimePrev", &fHF_TimePrev, &b_epic_fHF_TimePrev);
    Notify();
 }
 
@@ -104,8 +106,6 @@ Int_t EpicRawTree::Cut(Long64_t entry)
 // returns -1 otherwise.
    return 1;
 }
-
-
 
 void EpicRawTree::Loop()
 {

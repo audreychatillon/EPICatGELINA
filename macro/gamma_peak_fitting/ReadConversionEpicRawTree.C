@@ -1,89 +1,148 @@
 #include <iostream>
-#include <fstream>
-#include <ctype.h>
-#include <math.h>
-#include <stdlib.h>
-#include <stdio.h>
-
-#include "../ClassDef/EpicRawTree.h"
+#include <iomanip>
 
 #include <TCanvas.h>
-#include <TChain.h>
 #include <TFile.h>
-#include <TH1F.h>
+#include <TH1.h>
+#include <TTree.h>
+
+#include "/home/audrey/.local/nptool/default/include/EpicData.h"
+
+using namespace std;
 
 void run(UShort_t run_number)
 {
 
-  char name[100];
+    // === =========================================================
+    // === variables 
 
-  // TODO remove hard coding
-  const unsigned short m_nDets = 1;
-  unsigned short m_nAnodes[m_nDets] = {11};  
-  const unsigned short m_nAnodesTot = 11;
+    char   name[100];
+    double thf_prev = -1;
+    double thf_curr = -1;
+
+    vector<short>   *fFC_DetNbr = nullptr;
+
+    struct TofRawInfo{
+        short  anode;
+        double tFC ;
+        double tHF_prev;
+        double tHF_curr;
+    };
+    vector<TofRawInfo> pendingFC;
+   
+    double tofraw_prev_offset = -5000000.+1000.;
+    double tofraw_curr_offset = -2500000.+1000.;
+    double tofraw_next_offset = 1000.;
 
 
-  // === =========================================================
-  // === histograms
-  TH1F * h1_inTofRaw[m_nAnodesTot];
-  TH1F * h1_inTofRaw_GammaPeak[m_nAnodesTot];
-  int anode = 0;
-  for(unsigned short d = 0 ; d < m_nDets; d++){
-    for(unsigned short a = 0 ; a < m_nAnodes[d]; a++){
-       sprintf(name,"inTofRaw_EPIC%i_A%i",d+1,a+1);
-       h1_inTofRaw[anode] = new TH1F(name,name,60000,-2000,4000);
-       sprintf(name,"inTofRaw_GammaPeak_EPIC%i_A%i",d+1,a+1);
-       h1_inTofRaw_GammaPeak[anode] = new TH1F(name,name,10000,500,1500);
-       anode++;
+
+
+    // === =========================================================
+    // === histograms 
+
+    TH1D * h1_tofraw_prev[11];
+    TH1D * h1_tofraw_curr[11];
+    TH1D * h1_tofraw_next[11];
+    for(short a = 1 ; a <= 11 ; a++){
+        sprintf(name,"tofraw_prev_A%02d",a);
+        h1_tofraw_prev[a-1] = new TH1D(name,name,20000,-500,1500);
+        h1_tofraw_prev[a-1]->SetLineColor(kBlack);
+        h1_tofraw_prev[a-1]->SetDirectory(0);
+
+        sprintf(name,"tofraw_curr_A%02d",a);
+        h1_tofraw_curr[a-1] = new TH1D(name,name,20000,-500,1500);
+        h1_tofraw_curr[a-1]->SetLineColor(kBlue);
+        h1_tofraw_curr[a-1]->SetDirectory(0);
+
+        sprintf(name,"tofraw_next_A%02d",a);
+        h1_tofraw_next[a-1] = new TH1D(name,name,20000,-500,1500);
+        h1_tofraw_next[a-1]->SetLineColor(kRed);
+        h1_tofraw_next[a-1]->SetDirectory(0);
     }
-  }
-
-  // === =========================================================
-  // === input data 
-  TChain * ch = new TChain("EpicRawTree");
-  sprintf(name,"../../output/conversion/raw_run%i.root",run_number);
-  ch->Add(name);
-  ch->ls();
-  EpicRawTree raw(ch);
-  ULong64_t nentries = (ULong64_t)ch->GetEntries();
-  cout << "number of entries: " << nentries << endl;
-  for(ULong64_t Entry=0; Entry<nentries; Entry++){
-    raw.GetEntry(Entry);
-    if ((Entry % 5000000)==0) cout << "\r === Entry = " << Entry << " === " << flush;
-
-    int mult = raw.fFC_DetNbr.size();
-    for(int i=0; i<mult; i++){
-	int det = raw.fFC_DetNbr[i];
-	int anode = raw.fFC_AnodeNbr[i];
-        int index = 0;
-        for(int d=0; d<det; d++){
-	  index += d*m_nAnodes[d];
-	}
-        index += anode - 1;
-        h1_inTofRaw[index]->Fill(raw.fFC_TofRaw[i]);
-        h1_inTofRaw_GammaPeak[index]->Fill(raw.fFC_TofRaw[i]);
-     }
 
 
-  }//end of loop over the entries 
 
-  cout << endl;
+    // === =========================================================
+    // === input data 
+  
+    TFile * f = new TFile(Form("../../output/conversion/raw%i.root",run_number),"read");
+    TTree * tFC = (TTree*)f->Get("EpicRawTree");
 
-  anode = 0 ;
-  TCanvas * can_tof_raw[m_nAnodesTot];
-  TCanvas * can_gamma_peak[m_nAnodesTot];
-  for(unsigned short d = 0 ; d < m_nDets; d++){
-    for(unsigned short a = 0 ; a < m_nAnodes[d]; a++){
-       sprintf(name,"inTofRaw_EPIC%i_ANODE%i",d+1,a+1);
-       can_tof_raw[anode] = new TCanvas(name,name,0,0,1500,1000);
-       can_tof_raw[anode]->cd();
-       h1_inTofRaw[anode]->Draw();
-       sprintf(name,"GammaPeak_EPIC%i_ANODE%i",d+1,a+1);
-       can_gamma_peak[anode] = new TCanvas(name,name,0,0,1500,1000);
-       can_gamma_peak[anode]->cd();
-       h1_inTofRaw_GammaPeak[anode]->Draw();
-       anode++;
+
+
+    // === =========================================================
+    // === branches 
+
+    epic::EpicData *epicFC = nullptr;
+    int statusFC = tFC->SetBranchAddress("epic",&epicFC);
+
+
+    // === =========================================================
+    // === loop 
+    ULong64_t nentries = tFC->GetEntries();
+    cout << "nentries = " << nentries << endl;
+    for(ULong64_t entry=0; entry < nentries ; entry++){
+    //for(ULong64_t entry=0; entry < 15000000 ; entry++){
+
+        if ((entry % 500000) == 0)   cout << "\r === Entry = " << entry << " / " << nentries << " === " << flush;
+        
+
+        int bytes = tFC->GetEntry(entry);
+        if(!epicFC) continue;
+
+        int mult = epicFC->GetFCMult() ;
+
+        //--- skip empty entry 
+        if (mult==0) continue;
+
+        //--- get t_hf infos
+        if(epicFC->GetDetNbr(0) == -1){
+            
+            double thf_next = epicFC->GetTimeHF();
+
+            // Fill histograms if pendingFC has data
+            for(const TofRawInfo &tof : pendingFC){
+                h1_tofraw_prev[tof.anode-1]->Fill(tof.tFC - tof.tHF_prev + tofraw_prev_offset);
+                h1_tofraw_curr[tof.anode-1]->Fill(tof.tFC - tof.tHF_curr + tofraw_curr_offset);
+                h1_tofraw_next[tof.anode-1]->Fill(tof.tFC - thf_next + tofraw_next_offset);
+            }
+
+            // Clear
+            pendingFC.clear();
+
+            // newvalue
+            thf_prev = epicFC->GetTimePrevHF();
+            thf_curr = epicFC->GetTimeHF();
+            continue;
+        }
+        else{
+
+            //--- process FC entry
+            short index_qmax = epicFC->GetQmaxIndex();
+
+            //    skip alpha decay
+            if(!epicFC->GetIsFission(index_qmax))  continue;
+
+            //    get FC data
+            TofRawInfo fc;
+            fc.anode    = epicFC->GetAnodeNbr(index_qmax);
+            fc.tFC      = epicFC->GetTimeFC(index_qmax);
+            fc.tHF_prev = thf_prev;
+            fc.tHF_curr = thf_curr;
+            pendingFC.push_back(fc);
+        }
+    }// end of loop over the entries
+    
+
+    TCanvas * can = new TCanvas("TofRawComparison","TofRawComparison",0,0,3000,2000);
+    can->Divide(4,3);
+    for(short a = 1 ; a <=11 ; a++){
+        can->cd(a);
+        h1_tofraw_next[a-1]->Draw();
+        h1_tofraw_curr[a-1]->Draw("same");
+        h1_tofraw_prev[a-1]->Draw("same");
+
     }
-  }
+
 
 }

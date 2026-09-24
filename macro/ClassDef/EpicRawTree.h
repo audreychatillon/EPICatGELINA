@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Wed Jun 10 15:28:46 2026 by ROOT version 6.32.06
+// Thu Sep 24 13:59:05 2026 by ROOT version 6.36.06
 // from TTree EpicRawTree/nptool tree
-// found on file: ../../output/conversion/Test3_V4b_1190mbar_610V.root
+// found on file: ../../output/conversion/raw18.root
 //////////////////////////////////////////////////////////
 
 #ifndef EpicRawTree_h
@@ -11,6 +11,7 @@
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
+
 
 class EpicRawTree {
 public :
@@ -33,6 +34,8 @@ public :
    vector<double>  fFC_Q2;
    vector<double>  fFC_Q3;
    vector<double>  fFC_Q4;
+   vector<bool>    fFC_IsFission;
+   Double_t        fFC_DeltaTimeHF;
    Double_t        fFC_TimeLastHF;
    Short_t         fQmax_Index;
    vector<double>  fQmax_Sampler;
@@ -52,6 +55,8 @@ public :
    TBranch        *b_epic_fFC_Q2;   //!
    TBranch        *b_epic_fFC_Q3;   //!
    TBranch        *b_epic_fFC_Q4;   //!
+   TBranch        *b_epic_fFC_IsFission;   //!
+   TBranch        *b_epic_fFC_DeltaTimeHF;   //!
    TBranch        *b_epic_fFC_TimeLastHF;   //!
    TBranch        *b_epic_fQmax_Index;   //!
    TBranch        *b_epic_fQmax_Sampler;   //!
