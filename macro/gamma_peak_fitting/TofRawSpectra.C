@@ -49,46 +49,46 @@ void run()
         sprintf(name,"gnf_tofraw_curr_zoom_A%02d",a);
         h1_tofraw_curr_zoom[a-1] = new TH1D(name,name,30000,2498500,2501500);
         h1_tofraw_curr_zoom[a-1]->GetXaxis()->SetTitle("[ns] 100ps/bin");
-        h1_tofraw_curr_zoom[a-1]->SetLineColor(kBlue);
+        h1_tofraw_curr_zoom[a-1]->SetLineColor(kBlue+1);
         h1_tofraw_curr_zoom[a-1]->SetDirectory(0);
 
         sprintf(name,"gnf_tofraw_next_zoom_A%02d",a);
         h1_tofraw_next_zoom[a-1] = new TH1D(name,name,30000,-1500,1500);
         h1_tofraw_next_zoom[a-1]->GetXaxis()->SetTitle("[ns] 100ps/bin");
-        h1_tofraw_next_zoom[a-1]->SetLineColor(kRed);
+        h1_tofraw_next_zoom[a-1]->SetLineColor(kRed+1);
         h1_tofraw_next_zoom[a-1]->SetDirectory(0);
 
         sprintf(name,"gnf_tofraw_curr_A%02d",a);
         h1_tofraw_curr[a-1] = new TH1D(name,name,50400,-10000,2510000);
         h1_tofraw_curr[a-1]->GetXaxis()->SetTitle("[ns] 50ns/bin");
-        h1_tofraw_curr[a-1]->SetLineColor(kBlue);
+        h1_tofraw_curr[a-1]->SetLineColor(kBlue+1);
         h1_tofraw_curr[a-1]->SetDirectory(0);
 
-        sprintf(name,"gnf_tofraw_next_zoom_A%02d",a);
+        sprintf(name,"gnf_tofraw_next_A%02d",a);
         h1_tofraw_next[a-1] = new TH1D(name,name,50400,-2510000,10000);
         h1_tofraw_next[a-1]->GetXaxis()->SetTitle("[ns] 50ns/bin");
-        h1_tofraw_next[a-1]->SetLineColor(kRed);
+        h1_tofraw_next[a-1]->SetLineColor(kRed+1);
         h1_tofraw_next[a-1]->SetDirectory(0);
 
         sprintf(name,"gnf_tofraw_curr_offset_A%02d",a);
         h1_tofraw_curr_offset[a-1] = new TH1D(name,name,30000,0,3000);
         h1_tofraw_curr_offset[a-1]->GetXaxis()->SetTitle("[ns] 100ps/bin");
-        h1_tofraw_curr_offset[a-1]->SetLineColor(kBlue);
+        h1_tofraw_curr_offset[a-1]->SetLineColor(kBlue+1);
         h1_tofraw_curr_offset[a-1]->SetDirectory(0);
 
         sprintf(name,"gnf_tofraw_next_offset_zoom_A%02d",a);
         h1_tofraw_next_offset[a-1] = new TH1D(name,name,30000,-2501000,-2498000);
         h1_tofraw_next_offset[a-1]->GetXaxis()->SetTitle("[ns] 100ps/bin");
-        h1_tofraw_next_offset[a-1]->SetLineColor(kRed);
+        h1_tofraw_next_offset[a-1]->SetLineColor(kRed+1);
         h1_tofraw_next_offset[a-1]->SetDirectory(0);
 
-        sprintf(name,"gnf_tofraw_curr_zoom_A%02d",a);
+        sprintf(name,"gnf_tofraw_curr_zoom_A%02d_ExtraW",a);
         h1_tofraw_wExtraWindow_curr_zoom[a-1] = new TH1D(name,name,30000,2498500,2501500);
         h1_tofraw_wExtraWindow_curr_zoom[a-1]->GetXaxis()->SetTitle("[ns] 100ps/bin");
         h1_tofraw_wExtraWindow_curr_zoom[a-1]->SetLineColor(kBlue);
         h1_tofraw_wExtraWindow_curr_zoom[a-1]->SetDirectory(0);
 
-        sprintf(name,"gnf_tofraw_next_zoom_A%02d",a);
+        sprintf(name,"gnf_tofraw_next_zoom_A%02d_ExtraW",a);
         h1_tofraw_wExtraWindow_next_zoom[a-1] = new TH1D(name,name,30000,-1500,1500);
         h1_tofraw_wExtraWindow_next_zoom[a-1]->GetXaxis()->SetTitle("[ns] 100ps/bin");
         h1_tofraw_wExtraWindow_next_zoom[a-1]->SetLineColor(kRed);
@@ -107,17 +107,17 @@ void run()
     tFC->Add("../../output/conversion/raw_run17.root");
     tFC->Add("../../output/conversion/raw_run18.root");
     tFC->Add("../../output/conversion/raw_run19.root");
-    tFC->Add("../../output/conversion/raw_run21.root");
-    tFC->Add("../../output/conversion/raw_run22.root");
-    tFC->Add("../../output/conversion/raw_run23.root");
-    tFC->Add("../../output/conversion/raw_run24.root");
-    tFC->Add("../../output/conversion/raw_run25.root");
-    tFC->Add("../../output/conversion/raw_run26.root");
-    tFC->Add("../../output/conversion/raw_run27.root");
-    tFC->Add("../../output/conversion/raw_run28.root");
-    tFC->Add("../../output/conversion/raw_run29.root");
-    tFC->Add("../../output/conversion/raw_run30.root");
-    tFC->Add("../../output/conversion/raw_run31.root");
+    //tFC->Add("../../output/conversion/raw_run21.root");
+    //tFC->Add("../../output/conversion/raw_run22.root");
+    //tFC->Add("../../output/conversion/raw_run23.root");
+    //tFC->Add("../../output/conversion/raw_run24.root");
+    //tFC->Add("../../output/conversion/raw_run25.root");
+    //tFC->Add("../../output/conversion/raw_run26.root");
+    //tFC->Add("../../output/conversion/raw_run27.root");
+    //tFC->Add("../../output/conversion/raw_run28.root");
+    //tFC->Add("../../output/conversion/raw_run29.root");
+    //tFC->Add("../../output/conversion/raw_run30.root");
+    //tFC->Add("../../output/conversion/raw_run31.root");
     // second part with V4B and new parameters for HF channel
     //tFC->Add("../../output/conversion/raw_run32.root");
     //tFC->Add("../../output/conversion/raw_run33.root");
@@ -140,11 +140,9 @@ void run()
     // === loop 
     ULong64_t nentries = tFC->GetEntries();
     cout << "nentries = " << nentries << endl;
-    //for(ULong64_t entry=0; entry < nentries ; entry++){
-    for(ULong64_t entry=0; entry < 50000000 ; entry++){
+    for(ULong64_t entry=0; entry < nentries ; entry++){
 
         if ((entry % 1000000) == 0)   cout << "\r === Entry = " << entry << " / " << nentries << " === " << flush;
-        
 
         int bytes = tFC->GetEntry(entry);
         if(!epicFC) continue;
@@ -154,9 +152,15 @@ void run()
         //--- skip empty entry 
         if (mult==0) continue;
 
-        //--- get t_hf infos
-        if(epicFC->GetDetNbr(0) == -1){
-          
+        short imax = epicFC->GetQmaxIndex();
+        short ihf  = epicFC->GetHFIndex();
+
+        // --- ------------------------------------------------------------------------------
+        // --- HF ONLY : get t_hf infos
+        if(epicFC->GetFCMult()==1 && ihf>=0){
+ 
+            if(imax>=0)  cout << "WARNING mult=1, HFIndex = " << ihf << " QmaxIndex = " << imax << endl;
+
             double thf_next = epicFC->GetTimeHF();
 
             // Fill histograms if pendingFC has data
@@ -180,20 +184,19 @@ void run()
             // newvalue
             thf_curr = thf_next;
             thf_prev = thf_curr - epicFC->GetDeltaTHF();
-            continue;
         }
-        else{
 
-            //--- process FC entry
-            short index_qmax = epicFC->GetQmaxIndex();
+        // --- ------------------------------------------------------------------------------
+        // --- FC ONLY
+        else if(epicFC->GetFCMult() >= 1 && ihf == -1 && imax >= 0){
 
             //    skip alpha decay
-            if(!epicFC->GetIsFission(index_qmax))  continue;
+            if(!epicFC->GetIsFission(imax))  continue;
 
             //    get FC data
             TofRawInfo fc;
-            fc.anode    = epicFC->GetAnodeNbr(index_qmax);
-            fc.tFC      = epicFC->GetTimeFC(index_qmax);
+            fc.anode    = epicFC->GetAnodeNbr(imax);
+            fc.tFC      = epicFC->GetTimeFC(imax);
             fc.tHF_prev = thf_prev;
             fc.tHF_curr = thf_curr;
             pendingFC.push_back(fc);
@@ -203,6 +206,125 @@ void run()
             }
             else
                 pendingFCx.push_back(fc);
+        }
+        // --- ------------------------------------------------------------------------------
+        // --- FC + HF with tFC < tHF
+        else if(epicFC->GetFCMult() >=1 && ihf>=0 && imax>=0 && epicFC->GetTimeFC(imax) < epicFC->GetTimeHF()){
+
+            //if(imax > ihf){
+            //    cout << endl << " WARNING [1] : event not processed mult = " << epicFC->GetFCMult() << endl;
+            //    cout << "          imax = " << imax << ", ihf = " << ihf << endl;
+            //    cout << setprecision(25) << "           tFC = " << epicFC->GetTimeFC(imax) << ", tHF = " << epicFC->GetTimeHF() << endl ;
+            //    cout << setprecision(25) << "           t_lastHF = " << epicFC->GetTimeLastHF() << endl;
+            //}
+            //else{
+                // first process FC data if fission
+                if(epicFC->GetIsFission(imax)){
+                    //    get FC data
+                    TofRawInfo fc;
+                    fc.anode    = epicFC->GetAnodeNbr(imax);
+                    fc.tFC      = epicFC->GetTimeFC(imax);
+                    fc.tHF_prev = thf_prev;
+                    fc.tHF_curr = thf_curr;
+                    pendingFC.push_back(fc);
+                    if((fc.tFC-fc.tHF_curr) < 1000){
+                        h1_tofraw_wExtraWindow_curr_zoom[fc.anode-1]->Fill(fc.tFC - fc.tHF_prev);
+                        h1_tofraw_wExtraWindow_next_zoom[fc.anode-1]->Fill(fc.tFC - fc.tHF_curr);
+                    }
+                    else
+                        pendingFCx.push_back(fc);
+                }
+
+                // then process HF data
+                double thf_next = epicFC->GetTimeHF();
+
+                // Fill histograms if pendingFC has data
+                for(const TofRawInfo &tof : pendingFC){
+                    h1_tofraw_curr_zoom[tof.anode-1]->Fill(tof.tFC - tof.tHF_curr);
+                    h1_tofraw_next_zoom[tof.anode-1]->Fill(tof.tFC - thf_next);
+                    h1_tofraw_curr[tof.anode-1]->Fill(tof.tFC - tof.tHF_curr);
+                    h1_tofraw_next[tof.anode-1]->Fill(tof.tFC - thf_next);
+                    h1_tofraw_curr_offset[tof.anode-1]->Fill(tof.tFC - tof.tHF_curr);
+                    h1_tofraw_next_offset[tof.anode-1]->Fill(tof.tFC - thf_next);
+                }
+                for(const TofRawInfo &tof : pendingFCx){
+                    h1_tofraw_wExtraWindow_curr_zoom[tof.anode-1]->Fill(tof.tFC - tof.tHF_curr);
+                    h1_tofraw_wExtraWindow_next_zoom[tof.anode-1]->Fill(tof.tFC - thf_next);
+                }
+
+                // Clear
+                pendingFC.clear();
+                pendingFCx.clear();
+
+                // newvalue
+                thf_curr = thf_next;
+                thf_prev = thf_curr - epicFC->GetDeltaTHF();
+            //}
+        }
+        // --- ------------------------------------------------------------------------------
+        // --- FC + HF with tHF < tFC
+        else if(epicFC->GetFCMult() >= 1 && ihf >= 0 && imax >=0 && epicFC->GetTimeFC(imax) > epicFC->GetTimeHF()){
+            //if(epicFC->GetTimeFC(imax) < epicFC->GetTimeHF()){
+            //    cout << endl << " WARNING [2] : event not processed mult = " << epicFC->GetFCMult()  << endl;
+            //    cout << "          imax = " << imax << ", ihf = " << ihf << endl;
+            //    cout << setprecision(25) << "           tFC = " << epicFC->GetTimeFC(imax) << ", tHF = " << epicFC->GetTimeHF() << endl ;
+            //    cout << setprecision(25) << "           t_lastHF = " << epicFC->GetTimeLastHF() << endl;
+            //}
+            //else{
+                // first process HF data
+                double thf_next = epicFC->GetTimeHF();
+
+                // Fill histograms if pendingFC has data
+                for(const TofRawInfo &tof : pendingFC){
+                    h1_tofraw_curr_zoom[tof.anode-1]->Fill(tof.tFC - tof.tHF_curr);
+                    h1_tofraw_next_zoom[tof.anode-1]->Fill(tof.tFC - thf_next);
+                    h1_tofraw_curr[tof.anode-1]->Fill(tof.tFC - tof.tHF_curr);
+                    h1_tofraw_next[tof.anode-1]->Fill(tof.tFC - thf_next);
+                    h1_tofraw_curr_offset[tof.anode-1]->Fill(tof.tFC - tof.tHF_curr);
+                    h1_tofraw_next_offset[tof.anode-1]->Fill(tof.tFC - thf_next);
+                }
+                for(const TofRawInfo &tof : pendingFCx){
+                    h1_tofraw_wExtraWindow_curr_zoom[tof.anode-1]->Fill(tof.tFC - tof.tHF_curr);
+                    h1_tofraw_wExtraWindow_next_zoom[tof.anode-1]->Fill(tof.tFC - thf_next);
+                }
+
+                // Clear
+                pendingFC.clear();
+                pendingFCx.clear();
+
+                // newvalue
+                thf_curr = thf_next;
+                thf_prev = thf_curr - epicFC->GetDeltaTHF();
+
+                // then process FC data if fission
+                if(epicFC->GetIsFission(imax)){
+                    //    get FC data
+                    TofRawInfo fc;
+                    fc.anode    = epicFC->GetAnodeNbr(imax);
+                    fc.tFC      = epicFC->GetTimeFC(imax);
+                    fc.tHF_prev = thf_prev;
+                    fc.tHF_curr = thf_curr;
+                    pendingFC.push_back(fc);
+                    if((fc.tFC-fc.tHF_curr) < 1000){
+                        h1_tofraw_wExtraWindow_curr_zoom[fc.anode-1]->Fill(fc.tFC - fc.tHF_prev);
+                        h1_tofraw_wExtraWindow_next_zoom[fc.anode-1]->Fill(fc.tFC - fc.tHF_curr);
+                    }
+                    else
+                        pendingFCx.push_back(fc);
+                }
+            //}
+        }
+        else{
+            cout << "EVENT NOT PROCESSED: mult = " << epicFC->GetFCMult() << ", imax = " << imax << ", ihf = " << ihf << endl;
+            for (int i = 0 ; i < epicFC->GetFCMult() ; i++){
+                cout << "anode = " << epicFC->GetAnodeNbr(i);
+                cout << ", tFC = " << epicFC->GetTimeFC(i);
+                cout << ", Qmax = " << epicFC->GetQmax(i);
+                cout << ", Q1 = " << epicFC->GetQ1(i);
+                cout << ", Q2 = " << epicFC->GetQ2(i);
+                cout << ", Q3 = " << epicFC->GetQ3(i) << endl;
+
+            }
         }
     }// end of loop over the entries
     
