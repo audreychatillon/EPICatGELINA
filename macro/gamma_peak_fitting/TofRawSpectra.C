@@ -7,8 +7,8 @@
 #include <TH1.h>
 #include <TTree.h>
 
-#include "/home/audrey/.local/nptool/default/include/EpicData.h"
-//#include "/home/chatillona/.local/nptool/default/include/EpicData.h"
+//#include "/home/audrey/.local/nptool/default/include/EpicData.h"
+#include "/home/chatillona/.local/nptool/default/include/EpicData.h"
 
 using namespace std;
 
@@ -104,9 +104,9 @@ void run()
     //TTree * tFC = (TTree*)f->Get("EpicRawTree");
     TChain * tFC = new TChain("EpicRawTree");
     // first part with V4B
-    tFC->Add("../../output/conversion/raw_run17.root");
+    //tFC->Add("../../output/conversion/raw_run17.root");
     tFC->Add("../../output/conversion/raw_run18.root");
-    tFC->Add("../../output/conversion/raw_run19.root");
+    //tFC->Add("../../output/conversion/raw_run19.root");
     //tFC->Add("../../output/conversion/raw_run21.root");
     //tFC->Add("../../output/conversion/raw_run22.root");
     //tFC->Add("../../output/conversion/raw_run23.root");
