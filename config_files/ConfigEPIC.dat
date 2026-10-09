@@ -138,4 +138,4 @@ ConfigEPIC:
   Q3_gate_stop: 40
   Q4_gate_stop: 80
   RawTof_MaxLimit: -1
-  get_sampler_qmax: 1
+  get_sampler_qmax: 0
