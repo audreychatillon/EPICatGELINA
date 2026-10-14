@@ -221,18 +221,18 @@ void run()
 						fFC_q3 = fc.mFC_q3;
 						fFC_alpha = fc.mFC_alpha;
 						fFC_fission = fc.mFC_fission;
-						fHF_time_curr = mHF_time_curr;
-						fHF_time_next = mHF_time_next;
+						fHF_time_curr = fc.mHF_curr;
+						fHF_time_next = epicFC->GetTimeHF();
 						tout->Fill();
 					}
-					pendingFC.clear();
 				}
-				mHF_time_curr = mHF_time_next;
 			}
 		}
+		pendingFC.clear();
+		mHF_time_curr = epicFC->GetTimeHF();
  	}
 
-	if(ifc >= 0 && ihf == -1){
+	else if(ifc >= 0 && ihf == -1){
 		FCdata fc ;
 		fc.mFC_anode = epicFC->GetAnodeNbr(ifc);
 		fc.mFC_time = epicFC->GetTimeFC(ifc);
@@ -241,15 +241,139 @@ void run()
 		fc.mFC_q2 = epicFC->GetQ2(ifc);
 		fc.mFC_q3 = epicFC->GetQ3(ifc);
 		fc.mHF_curr = mHF_time_curr;
+		fc.mFC_alpha = false;
+		fc.mFC_fission = false;
 		if(fc.mFC_q3>0 && fc.mFC_anode>0){ 
 			h2_discri[fc.mFC_anode-1]->Fill(fc.mFC_q1,fc.mFC_q2/fc.mFC_q3);
-                	if(cutalpha[fc.mFC_anode-1]->IsInside(fc.mFC_q1,fc.mFC_q2/fc.mFC_q3)) fc.mFC_alpha = true;
-			if(cutfission[fc.mFC_anode-1]->IsInside(fc.mFC_q1,fc.mFC_q2/fc.mFC_q3)) fc.mFC_fission = true; 
+                	if(cutalpha[fc.mFC_anode-1]->IsInside(fc.mFC_q1,fc.mFC_q2/fc.mFC_q3)) 
+				fc.mFC_alpha = true;
+			if(cutfission[fc.mFC_anode-1]->IsInside(fc.mFC_q1,fc.mFC_q2/fc.mFC_q3)) 
+				fc.mFC_fission = true; 
 		}
 		pendingFC.push_back(fc);
 	}
 
-	//TODO if(ifc >=0 && ihf >= 0)
+	else if(ifc >=0 && ihf >= 0){
+
+		if(epicFC->GetTimeFC(ifc) <= mHF_time_curr){
+			// first : fill the pending vector
+			FCdata fc ;
+			fc.mFC_anode = epicFC->GetAnodeNbr(ifc);
+			fc.mFC_time = epicFC->GetTimeFC(ifc);
+			fc.mFC_qmax = epicFC->GetQmax(ifc);
+			fc.mFC_q1 = epicFC->GetQ1(ifc);
+			fc.mFC_q2 = epicFC->GetQ2(ifc);
+			fc.mFC_q3 = epicFC->GetQ3(ifc);
+			fc.mHF_curr = mHF_time_curr;
+			fc.mFC_alpha = false;
+			fc.mFC_fission = false;
+			if(fc.mFC_q3>0 && fc.mFC_anode>0){ 
+				h2_discri[fc.mFC_anode-1]->Fill(fc.mFC_q1,fc.mFC_q2/fc.mFC_q3);
+                		if(cutalpha[fc.mFC_anode-1]->IsInside(fc.mFC_q1,fc.mFC_q2/fc.mFC_q3)) 
+					fc.mFC_alpha = true;
+				if(cutfission[fc.mFC_anode-1]->IsInside(fc.mFC_q1,fc.mFC_q2/fc.mFC_q3)) 
+					fc.mFC_fission = true; 
+			}
+			pendingFC.push_back(fc);
+			// then check tHF
+			h1_THF->Fill(epicFC->GetTimeHF()*1.e-09);
+			h1_DeltaTHF->Fill(epicFC->GetDeltaTHF()); 
+			h1_DeltaTHFzoom->Fill(epicFC->GetDeltaTHF()); 
+        		if(epicFC->GetDeltaTHF()>1000){
+				thf_prev = thf_curr;
+				thf_curr = epicFC->GetTimeHF();
+				h1_noR_THF->Fill(thf_curr*1.e-09);
+				h1_noR_DeltaTHF->Fill(thf_curr-thf_prev); 
+				if(ifc==-1) h1_noR_HFonly_DeltaTHF->Fill(thf_curr-thf_prev); 
+				h1_noR_DeltaTHFzoom->Fill(thf_curr-thf_prev); 
+				if(2500005 < (thf_curr-thf_prev) && (thf_curr-thf_prev) < 2500035){
+					mHF_time_next = thf_curr;
+					h1_noR_Good_THF->Fill(thf_curr*1.e-09); 
+					// fill tree
+					if(pendingFC.size()>0){
+						for(size_t i = 0 ; i<pendingFC.size() ; i++){
+							FCdata fc = pendingFC[i];
+							fFC_anode = fc.mFC_anode;
+							fFC_time = fc.mFC_time;
+							fFC_qmax = fc.mFC_qmax;
+							fFC_q1 = fc.mFC_q1;
+							fFC_q2 = fc.mFC_q2;
+							fFC_q3 = fc.mFC_q3;
+							fFC_alpha = fc.mFC_alpha;
+							fFC_fission = fc.mFC_fission;
+							fHF_time_curr = fc.mHF_curr;
+							fHF_time_next = epicFC->GetTimeHF();
+							tout->Fill();
+						}
+					}
+				}
+			}
+			pendingFC.clear();
+			mHF_time_curr = epicFC->GetTimeHF();
+		}
+		else{
+			// first check tHF
+			h1_THF->Fill(epicFC->GetTimeHF()*1.e-09);
+			h1_DeltaTHF->Fill(epicFC->GetDeltaTHF()); 
+			h1_DeltaTHFzoom->Fill(epicFC->GetDeltaTHF()); 
+        		if(epicFC->GetDeltaTHF()>1000){
+				thf_prev = thf_curr;
+				thf_curr = epicFC->GetTimeHF();
+				h1_noR_THF->Fill(thf_curr*1.e-09);
+				h1_noR_DeltaTHF->Fill(thf_curr-thf_prev); 
+				if(ifc==-1) h1_noR_HFonly_DeltaTHF->Fill(thf_curr-thf_prev); 
+				h1_noR_DeltaTHFzoom->Fill(thf_curr-thf_prev); 
+				if(2500005 < (thf_curr-thf_prev) && (thf_curr-thf_prev) < 2500035){
+					mHF_time_next = thf_curr;
+					h1_noR_Good_THF->Fill(thf_curr*1.e-09); 
+					// fill tree
+					if(pendingFC.size()>0){
+						for(size_t i = 0 ; i<pendingFC.size() ; i++){
+							FCdata fc = pendingFC[i];
+							fFC_anode = fc.mFC_anode;
+							fFC_time = fc.mFC_time;
+							fFC_qmax = fc.mFC_qmax;
+							fFC_q1 = fc.mFC_q1;
+							fFC_q2 = fc.mFC_q2;
+							fFC_q3 = fc.mFC_q3;
+							fFC_alpha = fc.mFC_alpha;
+							fFC_fission = fc.mFC_fission;
+							fHF_time_curr = fc.mHF_curr;
+							fHF_time_next = epicFC->GetTimeHF();
+							tout->Fill();
+						}
+					}
+				}
+			}
+			pendingFC.clear();
+			mHF_time_curr = epicFC->GetTimeHF();
+			// then : fill the pending vector
+			FCdata fc ;
+			fc.mFC_anode = epicFC->GetAnodeNbr(ifc);
+			fc.mFC_time = epicFC->GetTimeFC(ifc);
+			fc.mFC_qmax = epicFC->GetQmax(ifc);
+			fc.mFC_q1 = epicFC->GetQ1(ifc);
+			fc.mFC_q2 = epicFC->GetQ2(ifc);
+			fc.mFC_q3 = epicFC->GetQ3(ifc);
+			fc.mHF_curr = mHF_time_curr;
+			fc.mFC_alpha = false;
+			fc.mFC_fission = false;
+			if(fc.mFC_q3>0 && fc.mFC_anode>0){ 
+				h2_discri[fc.mFC_anode-1]->Fill(fc.mFC_q1,fc.mFC_q2/fc.mFC_q3);
+                		if(cutalpha[fc.mFC_anode-1]->IsInside(fc.mFC_q1,fc.mFC_q2/fc.mFC_q3)) 
+					fc.mFC_alpha = true;
+				if(cutfission[fc.mFC_anode-1]->IsInside(fc.mFC_q1,fc.mFC_q2/fc.mFC_q3)) 
+					fc.mFC_fission = true; 
+			}
+			pendingFC.push_back(fc);
+
+		}
+        }
+
+        else{
+		cout << "EVENT NOT TAKEN INTO ACCOUNT: ifc = " << ifc << ", ihf = " << ihf << endl;
+        }
+
 
     }// end of loop over the entries
    
