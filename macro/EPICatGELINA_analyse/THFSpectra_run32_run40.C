@@ -256,7 +256,7 @@ void run()
     tFC->Add("../../output/conversion/raw_run37.root");
     tFC->Add("../../output/conversion/raw_run38.root");
     tFC->Add("../../output/conversion/raw_run39.root");
-    tFC->Add("../../output/conversion/raw_run40.root");
+    //tFC->Add("../../output/conversion/raw_run40.root");
     
     epic::EpicData *epicFC = nullptr;
     int statusFC = tFC->SetBranchAddress("epic",&epicFC);
