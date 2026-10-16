@@ -145,7 +145,7 @@ void run()
     TH1D * h1_TofCal_next[10];
     for(short a = 0 ; a < 10 ; a++){
         sprintf(name,"TofCal_next_A%02d",a+1);
-        h1_TofCal_next[a] = new TH1D(name,name,20000,-1500,500);
+        h1_TofCal_next[a] = new TH1D(name,name,20000,-100,1900);
         h1_TofCal_next[a]->SetDirectory(0);
         h1_TofCal_next[a]->SetLineColor(kRed);
 
@@ -518,11 +518,17 @@ void run()
     h1_ew_U238_next->SetLineColor(kRed+1);
     h1_ew_U235_next->SetLineColor(kRed+1);
     h1_ew_Pu242_next->SetLineColor(kRed+1);
-    for(short bin = 1 ; bin <= h1_ew_U238_next->GetNbinsX(); bin++){
-       h1_ew_U238_next->SetBinContent(bin,h1_e_U238_next->GetBinContent(bin)*1./MASS_U238);
-       h1_ew_U235_next->SetBinContent(bin,h1_e_U235_next->GetBinContent(bin)*1./MASS_U235);
-       h1_ew_Pu242_next->SetBinContent(bin,h1_e_Pu242_next->GetBinContent(bin)*1./MASS_PU242);
-    }
+  
+    h1_ew_U238_next->Add(h1_ew_next[0]); 
+    h1_ew_U235_next->Add(h1_ew_next[1]); 
+    h1_ew_U235_next->Add(h1_ew_next[2]); 
+    h1_ew_U235_next->Add(h1_ew_next[3]); 
+    h1_ew_Pu242_next->Add(h1_ew_next[4]); 
+    h1_ew_Pu242_next->Add(h1_ew_next[5]); 
+    h1_ew_Pu242_next->Add(h1_ew_next[6]); 
+    h1_ew_U235_next->Add(h1_ew_next[7]); 
+    h1_ew_U235_next->Add(h1_ew_next[8]); 
+    h1_ew_U235_next->Add(h1_ew_next[9]); 
 
     TH1D * h1_eratio_U238_next = new TH1D("En_ratioU235_U238_next","En_ratioU235_U238_next",200,0,20);
     TH1D * h1_eratio_U235_next = new TH1D("En_ratioU235_U235_next","En_ratioU235_U235_next",200,0,20);

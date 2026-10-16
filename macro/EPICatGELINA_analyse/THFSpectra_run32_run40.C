@@ -145,7 +145,7 @@ void run()
     TH1D * h1_TofCal_next[10];
     for(short a = 0 ; a < 10 ; a++){
         sprintf(name,"TofCal_next_A%02d",a+1);
-        h1_TofCal_next[a] = new TH1D(name,name,20000,-1500,500);
+        h1_TofCal_next[a] = new TH1D(name,name,20000,-100,1900);
         h1_TofCal_next[a]->SetDirectory(0);
         h1_TofCal_next[a]->SetLineColor(kRed);
 
