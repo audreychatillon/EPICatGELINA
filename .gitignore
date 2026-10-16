@@ -6,7 +6,6 @@ macro/ProtoEPIC_analyse_conversion_file/results/
 *.o
 *.so
 *.a
-*.root
 *.d
 *.pcm
 .*
