@@ -10,8 +10,8 @@
 #include <TH2.h>
 #include <TTree.h>
 
-#include "/home/audrey/.local/nptool/default/include/EpicData.h"
-//#include "/home/chatillona/.local/nptool/default/include/EpicData.h"
+//#include "/home/audrey/.local/nptool/default/include/EpicData.h"
+#include "/home/chatillona/.local/nptool/default/include/EpicData.h"
 
 using namespace std;
 
@@ -65,8 +65,8 @@ void run()
     double tofraw_next;
 
     double gammapeak[10] = { 
-        -887.04      , -8.87141e+02 , -8.87399e+02 , -8.87769e+02 , -8.83413e+02 ,
-        -8.81467e+02 , -8.79544e+02 , -8.78904e+02 , -8.88189e+02 , -8.86883e+02 
+	-898.253,     -8.98307e+02, -8.98556e+02, -8.98922e+02, -8.94611e+02, 
+	-8.92649e+02, -8.90707e+02, -8.90066e+02, -8.99358e+02, -8.98088e+02 
     };
     double flight_path[10] = {33.8, 27.2, 20.2, 13.6, 6.6, 0., -7.0, -13.6, -20.2, -27.2};
 
@@ -155,16 +155,23 @@ void run()
     // === Ene histograms
     TH1D * h1_e_next[10];
     TH1D * h1_ew_next[10];
+    TH2D * h2_q1e_next[10];
     for(short a = 0 ; a < 10 ; a++){
-	    h1_e_next[a] = new TH1D(Form("En_next_A%02d",a+1),Form("En_next_A%02d",a+1),200,0,20);
+	h1_e_next[a] = new TH1D(Form("En_next_A%02d",a+1),Form("En_next_A%02d",a+1),200,0,20);
         h1_e_next[a]->GetXaxis()->SetTitle("[MeV] 100keV/bin");
         h1_e_next[a]->SetLineColor(kRed+1);
         h1_e_next[a]->SetDirectory(0);
 
-	    h1_ew_next[a] = new TH1D(Form("En_weighted_next_A%02d",a+1),Form("En_weighted_next_A%02d",a+1),200,0,20);
+	h1_ew_next[a] = new TH1D(Form("En_weighted_next_A%02d",a+1),Form("En_weighted_next_A%02d",a+1),200,0,20);
         h1_ew_next[a]->GetXaxis()->SetTitle("[MeV] 100keV/bin");
         h1_ew_next[a]->SetLineColor(kRed+1);
         h1_ew_next[a]->SetDirectory(0);
+
+	h2_q1e_next[a] = new TH2D(Form("Q1vEn_next_A%02d",a+1),Form("Q1vEn_next_A%02d",a+1),200,0,20,1500,0,300000);
+        h2_q1e_next[a]->GetXaxis()->SetTitle("[MeV] 100keV/bin");
+        h2_q1e_next[a]->GetYaxis()->SetTitle("Q1 [a.u.]");
+        h2_q1e_next[a]->SetDirectory(0);
+
     }
 
     // === =========================================================
@@ -249,13 +256,13 @@ void run()
     TChain * tFC = new TChain("EpicRawTree");
     // first part with V4B
     tFC->Add("../../output/conversion/raw_run32.root");
-    tFC->Add("../../output/conversion/raw_run33.root");
-    tFC->Add("../../output/conversion/raw_run34.root");
-    tFC->Add("../../output/conversion/raw_run35.root");
-    tFC->Add("../../output/conversion/raw_run36.root");
-    tFC->Add("../../output/conversion/raw_run37.root");
-    tFC->Add("../../output/conversion/raw_run38.root");
-    tFC->Add("../../output/conversion/raw_run39.root");
+    //tFC->Add("../../output/conversion/raw_run33.root");
+    //tFC->Add("../../output/conversion/raw_run34.root");
+    //tFC->Add("../../output/conversion/raw_run35.root");
+    //tFC->Add("../../output/conversion/raw_run36.root");
+    //tFC->Add("../../output/conversion/raw_run37.root");
+    //tFC->Add("../../output/conversion/raw_run38.root");
+    //tFC->Add("../../output/conversion/raw_run39.root");
     //tFC->Add("../../output/conversion/raw_run40.root");
     
     epic::EpicData *epicFC = nullptr;
@@ -293,52 +300,52 @@ void run()
     	    h1_DeltaTHFzoom->Fill(epicFC->GetDeltaTHF()); 
         
             // [noR] : remove relexion < 1000 ns
-        	if(epicFC->GetDeltaTHF()>1000){
-    		    thf_prev = thf_curr;
-    		    thf_curr = epicFC->GetTimeHF();
+            if(epicFC->GetDeltaTHF()>1000){
+    		thf_prev = thf_curr;
+    		thf_curr = epicFC->GetTimeHF();
         
                 // thf_prev = Good / thf_curr = reflexion] : this one should be enough
                 if(2500889 < (thf_curr-thf_prev) && (thf_curr-thf_prev) < 2500905){
-                    //cout << endl;
-                    //cout << "case :  [thf_prev = Good / thf_curr = reflexion] " << endl;
-                    //cout << setprecision(25) << " thf_prev = " << thf_prev << ", th_curr = " << thf_curr << endl;
-                    thf_curr -= 878.1; 
-                    //cout << setprecision(25) << " thf_prev = " << thf_prev << ", th_curr = " << thf_curr << endl;
-                    //cout << "new DeltaT = " << thf_curr - thf_prev << endl;
+                //    //cout << endl;
+                //    //cout << "case :  [thf_prev = Good / thf_curr = reflexion] " << endl;
+                //    //cout << setprecision(25) << " thf_prev = " << thf_prev << ", th_curr = " << thf_curr << endl;
+                    thf_curr -= 879.7; // from run 32 to run
+                //    //cout << setprecision(25) << " thf_prev = " << thf_prev << ", th_curr = " << thf_curr << endl;
+                //    //cout << "new DeltaT = " << thf_curr - thf_prev << endl;
                 }
 
-    		    h1_noR_THF->Fill(thf_curr*1.e-09);
-    		    h1_noR_DeltaTHF->Fill(thf_curr-thf_prev); 
-    		    h1_noR_DeltaTHFzoom->Fill(thf_curr-thf_prev); 
-    		    if(ifc==-1) h1_noR_HFonly_DeltaTHF->Fill(thf_curr-thf_prev); 
+    		h1_noR_THF->Fill(thf_curr*1.e-09);
+    		h1_noR_DeltaTHF->Fill(thf_curr-thf_prev); 
+    		h1_noR_DeltaTHFzoom->Fill(thf_curr-thf_prev); 
+    		if(ifc==-1) h1_noR_HFonly_DeltaTHF->Fill(thf_curr-thf_prev); 
 
                 // [noR_Good] : remove reflexion + keep only good DeltaT peak
-    		    if(2500005 < (thf_curr-thf_prev) && (thf_curr-thf_prev) < 2500035){
-    		    	h1_noR_Good_THF->Fill(thf_curr*1.e-09);
+    		if(2500005 < (thf_curr-thf_prev) && (thf_curr-thf_prev) < 2500035){
+    		    h1_noR_Good_THF->Fill(thf_curr*1.e-09);
 
                     // calculate TofRaw if pendingFC and HFonly data
                     if(pendingFC.size() > 0){
                         for(size_t i = 0 ; i < pendingFC.size(); i++){
                             FCdata fc = pendingFC[i];
+                            tofraw_curr = fc.FC_time - fc.HF_curr - 2500000.;
+                            tofraw_next = fc.FC_time - thf_curr;
+                            double tofcal;
+                            double e = TofRaw2Ene(gammapeak[fc.FC_anode-1],FLIGHT_PATH + flight_path[fc.FC_anode-1],tofraw_curr,tofcal);
                             if(fc.FC_fission){
-                                tofraw_curr = fc.FC_time - fc.HF_curr - 2500000.;
-                                tofraw_next = fc.FC_time - thf_curr;
                                 h1_TofRaw_curr[fc.FC_anode-1]->Fill(tofraw_curr);
                                 h1_TofRaw_next[fc.FC_anode-1]->Fill(tofraw_next);
-                                double tofcal;
-                                double e = TofRaw2Ene(gammapeak[fc.FC_anode-1],FLIGHT_PATH + flight_path[fc.FC_anode-1],tofraw_curr,tofcal);
                                 h1_TofCal_next[fc.FC_anode-1]->Fill(tofcal);
                                 h1_e_next[fc.FC_anode-1]->Fill(e);
                                 h1_ew_next[fc.FC_anode-1]->Fill(e, 1./actinide_mass[fc.FC_anode-1]);
                             }
+                            h2_q1e_next[fc.FC_anode-1]->Fill(e,fc.FC_q1);
                         }
                         pendingFC.clear();
                     }
                     
                     // keep the current HF
                     thf_curr_good = thf_curr;
-    		    }
-                
+    	    	} 
     	    }// end of if reflexion
             else{
     		    h1_onlyR_THF->Fill(epicFC->GetTimeHF()*1.e-09);
@@ -351,16 +358,16 @@ void run()
             FCdata fc;
             fc.FC_anode = epicFC->GetAnodeNbr(ifc);
             fc.FC_time  = epicFC->GetTimeFC(ifc);
-			fc.FC_qmax = epicFC->GetQmax(ifc);
-			fc.FC_q1 = epicFC->GetQ1(ifc);
-			fc.FC_q2 = epicFC->GetQ2(ifc);
-			fc.FC_q3 = epicFC->GetQ3(ifc);
-		    fc.FC_alpha = false;
-		    fc.FC_fission = false;
-		    if(fc.FC_q3>0 && fc.FC_anode>0){ 
+	    fc.FC_qmax = epicFC->GetQmax(ifc);
+	    fc.FC_q1 = epicFC->GetQ1(ifc);
+	    fc.FC_q2 = epicFC->GetQ2(ifc);
+	    fc.FC_q3 = epicFC->GetQ3(ifc);
+	    fc.FC_alpha = false;
+	    fc.FC_fission = false;
+	    if(fc.FC_q3>0 && fc.FC_anode>0){ 
                 if(cutalpha[fc.FC_anode-1]->IsInside(fc.FC_q1,fc.FC_q2/fc.FC_q3))		fc.FC_alpha = true;
-		    	if(cutfission[fc.FC_anode-1]->IsInside(fc.FC_q1,fc.FC_q2/fc.FC_q3))		fc.FC_fission = true; 
-		    }
+	    	if(cutfission[fc.FC_anode-1]->IsInside(fc.FC_q1,fc.FC_q2/fc.FC_q3))		fc.FC_fission = true; 
+	    }
             fc.HF_curr  = thf_curr_good;
             pendingFC.push_back(fc);
         }
@@ -372,16 +379,16 @@ void run()
             FCdata fc;
             fc.FC_anode = epicFC->GetAnodeNbr(ifc);
             fc.FC_time  = epicFC->GetTimeFC(ifc);
-			fc.FC_qmax = epicFC->GetQmax(ifc);
-			fc.FC_q1 = epicFC->GetQ1(ifc);
-			fc.FC_q2 = epicFC->GetQ2(ifc);
-			fc.FC_q3 = epicFC->GetQ3(ifc);
-		    fc.FC_alpha = false;
-		    fc.FC_fission = false;
-		    if(fc.FC_q3>0 && fc.FC_anode>0){ 
-                if(cutalpha[fc.FC_anode-1]->IsInside(fc.FC_q1,fc.FC_q2/fc.FC_q3))		fc.FC_alpha = true;
-		    	if(cutfission[fc.FC_anode-1]->IsInside(fc.FC_q1,fc.FC_q2/fc.FC_q3))		fc.FC_fission = true; 
-		    }
+            fc.FC_qmax = epicFC->GetQmax(ifc);
+	    fc.FC_q1 = epicFC->GetQ1(ifc);
+	    fc.FC_q2 = epicFC->GetQ2(ifc);
+	    fc.FC_q3 = epicFC->GetQ3(ifc);
+	    fc.FC_alpha = false;
+	    fc.FC_fission = false;
+	    if(fc.FC_q3>0 && fc.FC_anode>0){ 
+            	if(cutalpha[fc.FC_anode-1]->IsInside(fc.FC_q1,fc.FC_q2/fc.FC_q3))		fc.FC_alpha = true;
+		if(cutfission[fc.FC_anode-1]->IsInside(fc.FC_q1,fc.FC_q2/fc.FC_q3))		fc.FC_fission = true; 
+	    }
             fc.HF_curr  = thf_curr_good;
             pendingFC.push_back(fc);
 
@@ -391,45 +398,43 @@ void run()
     	    h1_DeltaTHFzoom->Fill(epicFC->GetDeltaTHF()); 
 
             // [noR] : remove relexion < 1000 ns
-        	if(epicFC->GetDeltaTHF()>1000){
-    		    thf_prev = thf_curr;
-    		    thf_curr = epicFC->GetTimeHF();
+            if(epicFC->GetDeltaTHF()>1000){
+    		thf_prev = thf_curr;
+    		thf_curr = epicFC->GetTimeHF();
         
                 // thf_prev = Good / thf_curr = reflexion]
                 if(2500889 < (thf_curr-thf_prev) && (thf_curr-thf_prev) < 2500905)  thf_curr -= 878.1; 
 
-    		    h1_noR_THF->Fill(thf_curr*1.e-09);
-    		    h1_noR_DeltaTHF->Fill(thf_curr-thf_prev); 
-    		    h1_noR_DeltaTHFzoom->Fill(thf_curr-thf_prev); 
-    		    if(ifc==-1) h1_noR_HFonly_DeltaTHF->Fill(thf_curr-thf_prev); 
+    		h1_noR_THF->Fill(thf_curr*1.e-09);
+    		h1_noR_DeltaTHF->Fill(thf_curr-thf_prev); 
+    		h1_noR_DeltaTHFzoom->Fill(thf_curr-thf_prev); 
+    		if(ifc==-1) h1_noR_HFonly_DeltaTHF->Fill(thf_curr-thf_prev); 
 
                 // [noR_Good] : remove reflexion + keep only good DeltaT peak
-    		    if(2500005 < (thf_curr-thf_prev) && (thf_curr-thf_prev) < 2500035){
-    		    	h1_noR_Good_THF->Fill(thf_curr*1.e-09);
+    		if(2500005 < (thf_curr-thf_prev) && (thf_curr-thf_prev) < 2500035){
+    			h1_noR_Good_THF->Fill(thf_curr*1.e-09);
                     // calculate TofRaw if pendingFC and HFonly data
                     if(pendingFC.size() > 0){
                         for(size_t i = 0 ; i < pendingFC.size(); i++){
                             FCdata fc = pendingFC[i];
+                            tofraw_curr = fc.FC_time - fc.HF_curr - 2500000.;
+                            tofraw_next = fc.FC_time - thf_curr;
+                            double tofcal;
+                            double e = TofRaw2Ene(gammapeak[fc.FC_anode-1],FLIGHT_PATH + flight_path[fc.FC_anode-1],tofraw_curr,tofcal);
                             if(fc.FC_fission){
-                                tofraw_curr = fc.FC_time - fc.HF_curr - 2500000.;
-                                tofraw_next = fc.FC_time - thf_curr;
                                 h1_TofRaw_curr[fc.FC_anode-1]->Fill(tofraw_curr);
                                 h1_TofRaw_next[fc.FC_anode-1]->Fill(tofraw_next);
-                                double tofcal;
-                                double e = TofRaw2Ene(gammapeak[fc.FC_anode-1],FLIGHT_PATH + flight_path[fc.FC_anode-1],tofraw_curr,tofcal);
                                 h1_TofCal_next[fc.FC_anode-1]->Fill(tofcal);
                                 h1_e_next[fc.FC_anode-1]->Fill(e);
                                 h1_ew_next[fc.FC_anode-1]->Fill(e, 1./actinide_mass[fc.FC_anode-1]);
                             }
-                        }
+                            h2_q1e_next[fc.FC_anode-1]->Fill(e,fc.FC_q1);
+                        }  
                         pendingFC.clear();
                     }
                     // keep the current HF
                     thf_curr_good = thf_curr;
-    		    } // end of [noR_Good]
-
-
-
+    		} // end of [noR_Good]
     	    }// end of if reflexion
             else{
     		    h1_onlyR_THF->Fill(epicFC->GetTimeHF()*1.e-09);
@@ -571,6 +576,13 @@ void run()
     }
     can7->cd(4); h1_eratio_Pu242_next->Draw();
     m_phy_gr["XSratio_JEFF_242Pu_235U"]->Draw("sameLP");
+
+    TCanvas * can8 = new TCanvas("Q1_vs_Ene","Q1_vs_Ene",0,0,3000,2000);
+    can8->Divide(5,2);
+    for(short a = 1 ; a <=10 ; a++){
+        can8->cd(a); gPad->SetLogz();
+        h2_q1e_next[a-1]->Draw("COL");
+    }
 
 
 }
