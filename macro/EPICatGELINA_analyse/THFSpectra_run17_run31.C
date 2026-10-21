@@ -10,8 +10,8 @@
 #include <TH2.h>
 #include <TTree.h>
 
-#include "/home/audrey/.local/nptool/default/include/EpicData.h"
-//#include "/home/chatillona/.local/nptool/default/include/EpicData.h"
+//#include "/home/audrey/.local/nptool/default/include/EpicData.h"
+#include "/home/chatillona/.local/nptool/default/include/EpicData.h"
 
 using namespace std;
 
@@ -34,7 +34,7 @@ double TofRaw2Ene(double gammapeak, double pos, double tofraw, double &tofcal) {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-void run()
+void run(int runid = 18)
 {
     // === =========================================================
     // === variables 
@@ -71,6 +71,7 @@ void run()
     double flight_path[10] = {33.8, 27.2, 20.2, 13.6, 6.6, 0., -7.0, -13.6, -20.2, -27.2};
 
     double actinide_mass[10] = {97.97,  99.23,  103.8,  103.31,  92.67,  95.14,  94.07,  112.69,  107.55,  105.04 };
+
 
 
     // === =========================================================
@@ -141,6 +142,16 @@ void run()
     }
 
     // === =========================================================
+    // === Q1 histograms
+    TH1D * h1_q1[10];
+    for(short a = 0 ; a < 10 ; a++){
+        sprintf(name,"Q1_A%02d",a+1);
+        h1_q1[a] = new TH1D(name,name,5000,0,500000);
+        h1_q1[a]->SetDirectory(0);
+    }
+
+
+    // === =========================================================
     // === TofCal histograms
     TH1D * h1_TofCal_next[10];
     for(short a = 0 ; a < 10 ; a++){
@@ -156,13 +167,16 @@ void run()
     TH1D * h1_e_next[10];
     TH2D * h2_q1e_next[10];
     TH1D * h1_ew_next[10];
+    TH1D * h1_highthr_e_next[10];
+    TH1D * h1_highthr_ew_next[10];
     for(short a = 0 ; a < 10 ; a++){
 	h1_e_next[a] = new TH1D(Form("En_next_A%02d",a+1),Form("En_next_A%02d",a+1),200,0,20);
         h1_e_next[a]->GetXaxis()->SetTitle("[MeV] 100keV/bin");
         h1_e_next[a]->SetLineColor(kRed+1);
         h1_e_next[a]->SetDirectory(0);
 
-	h2_q1e_next[a] = new TH1D(Form("Q1vsEn_next_A%02d",a+1),Form("En_next_A%02d",a+1),200,0,20);
+	h2_q1e_next[a] = new TH2D(Form("Q1vsEn_next_A%02d",a+1),Form("En_next_A%02d",a+1),200,0,20,1000,0,500000);
+        h2_q1e_next[a]->GetYaxis()->SetTitle("Q1 [a.u.]");
         h2_q1e_next[a]->GetXaxis()->SetTitle("[MeV] 100keV/bin");
         h2_q1e_next[a]->SetLineColor(kRed+1);
         h2_q1e_next[a]->SetDirectory(0);
@@ -171,6 +185,16 @@ void run()
         h1_ew_next[a]->GetXaxis()->SetTitle("[MeV] 100keV/bin");
         h1_ew_next[a]->SetLineColor(kRed+1);
         h1_ew_next[a]->SetDirectory(0);
+
+	h1_highthr_e_next[a] = new TH1D(Form("En_next_A%02d_Q1_high_thrs",a+1),Form("En_next_A%02d_Q1_high_thrs",a+1),200,0,20);
+        h1_highthr_e_next[a]->GetXaxis()->SetTitle("[MeV] 100keV/bin");
+        h1_highthr_e_next[a]->SetLineColor(kRed+1);
+        h1_highthr_e_next[a]->SetDirectory(0);
+
+	h1_highthr_ew_next[a] = new TH1D(Form("En_weighted_next_A%02d_Q1_high_thrs",a+1),Form("En_weighted_next_A%02d_Q1_high_thrs",a+1),200,0,20);
+        h1_highthr_ew_next[a]->GetXaxis()->SetTitle("[MeV] 100keV/bin");
+        h1_highthr_ew_next[a]->SetLineColor(kRed+1);
+        h1_highthr_ew_next[a]->SetDirectory(0);
     }
 
     // === =========================================================
@@ -254,20 +278,21 @@ void run()
     
     TChain * tFC = new TChain("EpicRawTree");
     // first part with V4B
-    tFC->Add("../../output/conversion/raw_run17.root");
-    tFC->Add("../../output/conversion/raw_run18.root");
-    tFC->Add("../../output/conversion/raw_run19.root");
-    tFC->Add("../../output/conversion/raw_run21.root");
-    tFC->Add("../../output/conversion/raw_run22.root");
-    tFC->Add("../../output/conversion/raw_run23.root");
-    tFC->Add("../../output/conversion/raw_run24.root");
-    tFC->Add("../../output/conversion/raw_run25.root");
-    tFC->Add("../../output/conversion/raw_run26.root");
-    tFC->Add("../../output/conversion/raw_run27.root");
-    tFC->Add("../../output/conversion/raw_run28.root");
-    tFC->Add("../../output/conversion/raw_run29.root");
-    tFC->Add("../../output/conversion/raw_run30.root");
-    tFC->Add("../../output/conversion/raw_run31.root");
+    tFC->Add(Form("../../output/conversion/raw_run%i.root",runid));
+    //tFC->Add("../../output/conversion/raw_run17.root");
+    //tFC->Add("../../output/conversion/raw_run18.root");
+    //tFC->Add("../../output/conversion/raw_run19.root");
+    //tFC->Add("../../output/conversion/raw_run21.root");
+    //tFC->Add("../../output/conversion/raw_run22.root");
+    //tFC->Add("../../output/conversion/raw_run23.root");
+    //tFC->Add("../../output/conversion/raw_run24.root");
+    //tFC->Add("../../output/conversion/raw_run25.root");
+    //tFC->Add("../../output/conversion/raw_run26.root");
+    //tFC->Add("../../output/conversion/raw_run27.root");
+    //tFC->Add("../../output/conversion/raw_run28.root");
+    //tFC->Add("../../output/conversion/raw_run29.root");
+    //tFC->Add("../../output/conversion/raw_run30.root");
+    //tFC->Add("../../output/conversion/raw_run31.root");
     
     epic::EpicData *epicFC = nullptr;
     int statusFC = tFC->SetBranchAddress("epic",&epicFC);
@@ -308,22 +333,22 @@ void run()
     		    thf_prev = thf_curr;
     		    thf_curr = epicFC->GetTimeHF();
         
-                // thf_prev = Good / thf_curr = reflexion] : this one should be enough
-                if(2500889 < (thf_curr-thf_prev) && (thf_curr-thf_prev) < 2500905){
-                    //cout << endl;
-                    //cout << "case :  [thf_prev = Good / thf_curr = reflexion] " << endl;
-                    //cout << setprecision(25) << " thf_prev = " << thf_prev << ", th_curr = " << thf_curr << endl;
-                    thf_curr -= 878.1; 
-                    //cout << setprecision(25) << " thf_prev = " << thf_prev << ", th_curr = " << thf_curr << endl;
-                    //cout << "new DeltaT = " << thf_curr - thf_prev << endl;
-                }
+                    // thf_prev = Good / thf_curr = reflexion] : this one should be enough
+                    if(2500889 < (thf_curr-thf_prev) && (thf_curr-thf_prev) < 2500905){
+                        //cout << endl;
+                        //cout << "case :  [thf_prev = Good / thf_curr = reflexion] " << endl;
+                        //cout << setprecision(25) << " thf_prev = " << thf_prev << ", th_curr = " << thf_curr << endl;
+                        thf_curr -= 878.1; 
+                        //cout << setprecision(25) << " thf_prev = " << thf_prev << ", th_curr = " << thf_curr << endl;
+                        //cout << "new DeltaT = " << thf_curr - thf_prev << endl;
+                    }
 
     		    h1_noR_THF->Fill(thf_curr*1.e-09);
     		    h1_noR_DeltaTHF->Fill(thf_curr-thf_prev); 
     		    h1_noR_DeltaTHFzoom->Fill(thf_curr-thf_prev); 
     		    if(ifc==-1) h1_noR_HFonly_DeltaTHF->Fill(thf_curr-thf_prev); 
 
-                // [noR_Good] : remove reflexion + keep only good DeltaT peak
+                    // [noR_Good] : remove reflexion + keep only good DeltaT peak
     		    if(2500005 < (thf_curr-thf_prev) && (thf_curr-thf_prev) < 2500035){
     		    	h1_noR_Good_THF->Fill(thf_curr*1.e-09);
 
@@ -349,7 +374,7 @@ void run()
                     
                     // keep the current HF
                     thf_curr_good = thf_curr;
-    		    }
+    		}
                 
     	    }// end of if reflexion
             else{
@@ -375,6 +400,7 @@ void run()
 	    }
             fc.HF_curr  = thf_curr_good;
             pendingFC.push_back(fc);
+	    h1_q1[fc.FC_anode-1]->Fill(fc.FC_q1);
         }
 
         // --- HFdata and FCdata
@@ -396,6 +422,7 @@ void run()
 	    }
             fc.HF_curr  = thf_curr_good;
             pendingFC.push_back(fc);
+	    h1_q1[fc.FC_anode-1]->Fill(fc.FC_q1);
 
             // all HF signals
     	    h1_THF->Fill(epicFC->GetTimeHF()*1.e-09);
@@ -586,11 +613,27 @@ void run()
     m_phy_gr["XSratio_JEFF_242Pu_235U"]->Draw("sameLP");
 
 
-    TCanvas * can8 = new TCanvas("Ene","Ene",0,0,3000,2000);
+    TCanvas * can8 = new TCanvas("Q1_vs_Ene","Q1_vs_Ene",0,0,3000,2000);
     can8->Divide(5,2);
     for(short a = 1 ; a <=10 ; a++){
         can8->cd(a); 
         h2_q1e_next[a-1]->Draw("col");
+    }
+
+    // histograms with Q1 high threshold
+
+    TCanvas * can9 = new TCanvas("Ene_Q1_high_thres","Ene_Q1_high_thres",0,0,3000,2000);
+    can9->Divide(5,2);
+    for(short a = 1 ; a <=10 ; a++){
+        can9->cd(a); 
+        h1_highthr_e_next[a-1]->Draw();
+    }
+
+    TCanvas * can10 = new TCanvas("Ene_weighted_Q1_high_thres","Ene_weighted_Q1_high_thres",0,0,3000,2000);
+    can10->Divide(5,2);
+    for(short a = 1 ; a <=10 ; a++){
+        can10->cd(a); gPad->SetLogy();
+        h1_highthr_ew_next[a-1]->Draw();
     }
 
 }
