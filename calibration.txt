@@ -3,4 +3,5 @@ CalibrationFilePath
   ./calibration/Gamma_Peak.cal
   ./calibration/TCutG_pts.cal
   ./calibration/Q1_high_threshold.cal
+  ./calibration/TCutG_phy_Q1vE_pts.cal
 
