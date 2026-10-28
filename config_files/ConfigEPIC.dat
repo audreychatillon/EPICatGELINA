@@ -11,7 +11,6 @@ ConfigEPIC:
   Q3_gate_start: 10
   Q3_gate_stop: 40
   Q4_gate_stop: 80
-  RawTof_MaxLimit: -1
 ConfigEPIC:
   det: 1
   anode: 2
@@ -25,7 +24,6 @@ ConfigEPIC:
   Q3_gate_start: 10
   Q3_gate_stop: 40
   Q4_gate_stop: 80
-  RawTof_MaxLimit: -1
 ConfigEPIC:
   det: 1
   anode: 3
@@ -39,7 +37,6 @@ ConfigEPIC:
   Q3_gate_start: 10
   Q3_gate_stop: 40
   Q4_gate_stop: 80
-  RawTof_MaxLimit: -1
 ConfigEPIC:
   det: 1
   anode: 4
@@ -53,7 +50,6 @@ ConfigEPIC:
   Q3_gate_start: 10
   Q3_gate_stop: 40
   Q4_gate_stop: 80
-  RawTof_MaxLimit: -1
 ConfigEPIC:
   det: 1
   anode: 5
@@ -67,7 +63,6 @@ ConfigEPIC:
   Q3_gate_start: 10
   Q3_gate_stop: 40
   Q4_gate_stop: 80
-  RawTof_MaxLimit: -1
 ConfigEPIC:
   det: 1
   anode: 6
@@ -81,7 +76,6 @@ ConfigEPIC:
   Q3_gate_start: 10 
   Q3_gate_stop: 40
   Q4_gate_stop: 80
-  RawTof_MaxLimit: -1
 ConfigEPIC:
   det: 1
   anode: 7
@@ -95,7 +89,6 @@ ConfigEPIC:
   Q3_gate_start: 10 
   Q3_gate_stop: 40
   Q4_gate_stop: 80
-  RawTof_MaxLimit: -1
 ConfigEPIC:
   det: 1
   anode: 8
@@ -109,7 +102,6 @@ ConfigEPIC:
   Q3_gate_start: 10 
   Q3_gate_stop: 40
   Q4_gate_stop: 80
-  RawTof_MaxLimit: -1
 ConfigEPIC:
   det: 1
   anode: 9
@@ -123,7 +115,6 @@ ConfigEPIC:
   Q3_gate_start: 10
   Q3_gate_stop: 40
   Q4_gate_stop: 80
-  RawTof_MaxLimit: -1
 ConfigEPIC:
   det: 1
   anode: 10
@@ -137,5 +128,4 @@ ConfigEPIC:
   Q3_gate_start: 10 
   Q3_gate_stop: 40
   Q4_gate_stop: 80
-  RawTof_MaxLimit: -1
   get_sampler_qmax: 1
