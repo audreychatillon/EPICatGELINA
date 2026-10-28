@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.0) 
+cmake_minimum_required (VERSION 3.0...3.5) 
 # Setting the policy to match Cmake version
 cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 
