@@ -8,9 +8,9 @@ EpicPretreatData::EpicPretreatData(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("../../output/pretreat/pretreat_run18.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("../../output/pretreat/pretreat_run17.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("../../output/pretreat/pretreat_run18.root");
+         f = new TFile("../../output/pretreat/pretreat_run17.root");
       }
       f->GetObject("EpicPretreatData",tree);
 
@@ -50,8 +50,6 @@ void EpicPretreatData::Init(TTree *tree)
    // pointers of the tree will be set.
    // It is normally not necessary to make changes to the generated
    // code, but the routine can be extended by the user if needed.
-   // Init() will be called many times when running on PROOF
-   // (once per file to be processed).
 
    // Set branch addresses and branch pointers
    if (!tree) return;
@@ -75,8 +73,7 @@ void EpicPretreatData::Init(TTree *tree)
 bool EpicPretreatData::Notify()
 {
    // The Notify() function is called when a new file is opened. This
-   // can be either for a new TTree in a TChain or when when a new TTree
-   // is started when using PROOF. It is normally not necessary to make changes
+   // can be for a new TTree in a TChain. It is normally not necessary to make changes
    // to the generated code, but the routine can be extended by the
    // user if needed. The return value is currently not used.
 
@@ -97,8 +94,6 @@ Int_t EpicPretreatData::Cut(Long64_t entry)
 // returns -1 otherwise.
    return 1;
 }
-
-
 
 void EpicPretreatData::Loop()
 {

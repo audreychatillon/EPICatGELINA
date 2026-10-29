@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Tue Oct 13 09:28:24 2026 by ROOT version 6.32.06
+// Thu Oct 29 18:18:52 2026 by ROOT version 6.40.04
 // from TTree EpicPretreatData/no cross talk, no reflexion, HF_curr, HF_next
-// found on file: ../../output/pretreat/pretreat_run18.root
+// found on file: ../../output/pretreat/pretreat_run17.root
 //////////////////////////////////////////////////////////
 
 #ifndef EpicPretreatData_h
@@ -16,8 +16,8 @@
 
 class EpicPretreatData {
 public :
-   TTree          *fChain;   //!pointer to the analyzed TTree or TChain
-   Int_t           fCurrent; //!current Tree number in a TChain
+   TTree          *fChain;   ///<!pointer to the analyzed TTree or TChain
+   Int_t           fCurrent; ///<!current Tree number in a TChain
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
@@ -34,16 +34,16 @@ public :
    Double_t        fHF_time_next;
 
    // List of branches
-   TBranch        *b_fFC_anode;   //!
-   TBranch        *b_fFC_time;   //!
-   TBranch        *b_fFC_qmax;   //!
-   TBranch        *b_fFC_q1;   //!
-   TBranch        *b_fFC_q2;   //!
-   TBranch        *b_fFC_q3;   //!
-   TBranch        *b_fFC_alpha;   //!
-   TBranch        *b_fFC_fission;   //!
-   TBranch        *b_fHF_time_curr;   //!
-   TBranch        *b_fHF_time_next;   //!
+   TBranch        *b_fFC_anode;   ///<!
+   TBranch        *b_fFC_time;   ///<!
+   TBranch        *b_fFC_qmax;   ///<!
+   TBranch        *b_fFC_q1;   ///<!
+   TBranch        *b_fFC_q2;   ///<!
+   TBranch        *b_fFC_q3;   ///<!
+   TBranch        *b_fFC_alpha;   ///<!
+   TBranch        *b_fFC_fission;   ///<!
+   TBranch        *b_fHF_time_curr;   ///<!
+   TBranch        *b_fHF_time_next;   ///<!
 
    EpicPretreatData(TTree *tree=0);
    virtual ~EpicPretreatData();

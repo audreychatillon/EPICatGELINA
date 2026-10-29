@@ -212,7 +212,7 @@ void run(int runid=17)
         h1_noR_DeltaTHFzoom->Fill(thf_curr-thf_prev); 
 
         // use reflexion to recover good HF
-        if(2500889 < (thf_curr-thf_prev) && (thf_curr-thf_prev) < 2500905) thf_curr -= 878.1;
+        if(2500889 < (thf_curr-thf_prev) && (thf_curr-thf_prev) < 2500905) thf_curr -= 878.15;
 
         // [noR_Good] : remove reflexion _ keep only good DeltaT peak
         if(2500005 < (thf_curr-thf_prev) && (thf_curr-thf_prev) < 2500035){
@@ -305,7 +305,7 @@ void run(int runid=17)
         h1_noR_DeltaTHFzoom->Fill(thf_curr-thf_prev); 
 
         // use reflexion to recover good HF
-        if(2500889 < (thf_curr-thf_prev) && (thf_curr-thf_prev) < 2500905) thf_curr -= 878.1;
+        if(2500889 < (thf_curr-thf_prev) && (thf_curr-thf_prev) < 2500905) thf_curr -= 878.15;
 
         // [noR_Good] : remove reflexion _ keep only good DeltaT peak
         if(2500005 < (thf_curr-thf_prev) && (thf_curr-thf_prev) < 2500035){
