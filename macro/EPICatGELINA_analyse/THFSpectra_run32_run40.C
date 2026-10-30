@@ -66,7 +66,7 @@ void run(int runid=32)
   double tofraw_next;
 
   // run 32, 33, 34, 35, 36, 37
-  // during run 38 : 2 gamma peaks
+  // during run 38 :nd run 39 2 gamma peaks constantly from 1 peak to another
   double gammapeak[10] = { 
     -898.253,     -8.98307e+02, -8.98556e+02, -8.98922e+02, -8.94611e+02, 
     -8.92649e+02, -8.90707e+02, -8.90066e+02, -8.99358e+02, -8.98088e+02 
@@ -94,7 +94,7 @@ void run(int runid=32)
   TH1D * h1_DeltaTHFzoom = new TH1D("DeltaTHFzoom","DeltaTHFzoom",30000,2498000,2501000);
   TH1D * h1_onlyR_THF = new TH1D("THF_onlyReflex","THF_onlyReflex",86400,0,86400);
   TH1D * h1_onlyR_DeltaTHFzoom = new TH1D("DeltaTHFzoom_onlyReflex","DeltaTHFzoom_onlyReflex",20000,870,890);
-  TH2D * h2_onlyR_DeltaTHFzoom = new TH2D("DeltaTHFzoom_onlyReflex_vs_THF","DeltaTHFzoom_onlyReflex_vs_THF",2000,0,20000,200,870,890);
+  TH2D * h2_onlyR_DeltaTHFzoom = new TH2D("DeltaTHFzoom_onlyReflex_vs_THF","DeltaTHFzoom_onlyReflex_vs_THF",2000,0,40000,200,870,890);
   TH1D * h1_noR_THF = new TH1D("THF_noReflex","THF_noReflex",86400,0,86400);
   TH1D * h1_noR_DeltaTHF = new TH1D("DeltaTHF_noReflex","DeltaTHF_noReflex",5100,0,5100000);
   TH1D * h1_noR_DeltaTHFzoom = new TH1D("DeltaTHFzoom_noReflex","DeltaTHFzoom_noReflex",30000,2498000,2501000);
@@ -140,7 +140,7 @@ void run(int runid=32)
       h1_TofRaw_next[a]->SetDirectory(0);
       h1_TofRaw_next[a]->SetLineColor(kRed);
       sprintf(name,"TofRaw_vs_THF_A%02d",a+1);
-      h2_TofRaw_vs_THF[a] = new TH2D(name,name,20000,0,20000,1200,-1000,200);
+      h2_TofRaw_vs_THF[a] = new TH2D(name,name,20000,0,40000,1200,-1000,200);
       h2_TofRaw_vs_THF[a]->SetDirectory(0);
   }
 
@@ -285,8 +285,8 @@ void run(int runid=32)
   //tFC->Add("../../output/conversion/raw_run35.root");
   //tFC->Add("../../output/conversion/raw_run36.root");
   //tFC->Add("../../output/conversion/raw_run37.root");
-  //tFC->Add("../../output/conversion/raw_run38.root");
-  //tFC->Add("../../output/conversion/raw_run39.root");
+  ////tFC->Add("../../output/conversion/raw_run38.root"); // do not use without selection of event
+  ////tFC->Add("../../output/conversion/raw_run39.root"); // do not use without selection of event
   //tFC->Add("../../output/conversion/raw_run40.root");
   
   epic::EpicData *epicFC = nullptr;
