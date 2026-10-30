@@ -42,7 +42,7 @@ void run()
   // === HISTOGRAMS
   TH1D * h1_tofraw[10];
   for(short a = 0 ; a < 10 ; a++){
-	  h1_tofraw[a] = new TH1D(Form("tofraw_A%02d",a+1),Form("tofraw_A%02d",a+1),100000,-5000,5000);
+	  h1_tofraw[a] = new TH1D(Form("tofraw_A%02d",a+1),Form("tofraw_A%02d",a+1),25050000,-5000,2500000);
     h1_tofraw[a]->GetXaxis()->SetTitle("[ns] 100ps/bin");
     h1_tofraw[a]->SetLineColor(kRed+1);
     h1_tofraw[a]->SetDirectory(0);
