@@ -78,7 +78,7 @@ void run()
   // ===========================================================================================
   // === DRAW
   
-  TCanvas * can1 = new TCanvas("TofRawNext","TofRawNext",0,0,3000,2000);
+  TCanvas * can1 = new TCanvas("TofRaw","TofRaw",0,0,3000,2000);
   can1->Divide(5,2);
   for(short a = 1 ; a <=10 ; a++){
       can1->cd(a); gPad->SetLogy();
